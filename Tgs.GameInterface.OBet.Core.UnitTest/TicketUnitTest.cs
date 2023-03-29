@@ -14,7 +14,477 @@ namespace Tgs.GameInterface.OBet.Core.UnitTest;
 public class TicketUnitTest
 {
     [Fact]
-    public async Task Normal_Process_Settled()
+    public async Task Cancelled_Bets()
+    {
+        var apiUrl = new Uri("https://sports-api.ob33club.com/");
+        var apiKey = "G4sL7r0kKFI5Mm317w99";
+        var agentId = "YYTES12";
+        var startdate = DateTimeOffset.UtcNow.AddMinutes(-10);
+        var enddate = DateTimeOffset.UtcNow.AddMinutes(-10);
+
+        var fakeLog = NullLogger<GameApiClient>.Instance;
+        var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
+        var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
+
+        var hash = "B6D1904E84D3E2AEF21171A632822AAC";
+        _ = fakeCryptographyUtensil
+            .Md5Encrypt(
+            $"k={apiKey}&a={agentId}")
+            .Returns(hash);
+
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["agentId"] = agentId;
+        query["hash"] = hash;
+        query["startdate"] = startdate.DatetimeConvertToString();
+        query["enddate"] = enddate.DatetimeConvertToString();
+
+        var response = new
+        {
+            Status = "success",
+            Data = new[] {
+                new {
+                    Id = "OU0792967714",
+                    SDate = "2020-11-30T00:00:00",
+                    TDate = "2020-11-30T20:06:42.77",
+                    kDate = "2020-12-01T01:30:00",
+                    ADate = "2020-11-30T20:06:42.77",
+                    PDate = "2020-12-01T02:21:23.203",
+                    User = "AG0SSS333",
+                    Sport = "Football",
+                    League = "English Premier League",
+                    Home = "Leicester City",
+                    Away = "Fulham",
+                    Sport_en = "Football",
+                    League_en = "English Premier League",
+                    Home_en = "Leicester City",
+                    Away_en = "Fulham",
+                    Live = "False",
+                    HomeScore = null as string,
+                    AwayScore = null as string,
+                    Status = "4",
+                    Ft = "h",
+                    OddsType = "MY",
+                    Game = "OU",
+                    Info = "1",
+                    Odds = "0.77",
+                    Side = "o",
+                    Side_en = null as string,
+                    Bamt = "5.0000",
+                    Wamt = "3.8500",
+                    Tresult = null as string,
+                    Fhscore = "0-2",
+                    Ftscore = "1-2",
+                    Fg = "a",
+                    Lg = "h",
+                    Ip = "",
+                    IsMobile = 0,
+                    Commission = "0.0200"
+                }
+            },
+            Message = string.Empty
+        };
+        var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        var handler = new MockHttpMessageHandler();
+        _ = handler
+            .Expect(HttpMethod.Get, "/api/sb/betinfo")
+                    .WithQueryString(query.ToString())
+                    .Respond(HttpStatusCode.OK, responseContent);
+
+        var fakeHttpClient = handler.ToHttpClient();
+
+        var client = new GameApiClient(
+            fakeLog,
+            fakeGameApiUtensil,
+            fakeCryptographyUtensil,
+            fakeHttpClient);
+
+        var actual = await client
+              .TicketAsync(
+                  apiUrl: apiUrl,
+                  apiKey: apiKey,
+                  agentId: agentId,
+                  startDate: startdate,
+                  endDate: enddate)
+              .ToArrayAsync()
+              .ConfigureAwait(false)
+              ?? Enumerable.Empty<TicketResult>();
+
+        Assert.NotNull(actual);
+        Assert.True(actual.Any());
+        Assert.NotNull(actual.First().ExternalClosedOn);
+    }
+
+    [Fact]
+    public async Task Data_Is_Empty()
+    {
+        var apiUrl = new Uri("https://sports-api.ob33club.com/");
+        var apiKey = "G4sL7r0kKFI5Mm317w99";
+        var agentId = "YYTES12";
+        var startdate = DateTimeOffset.UtcNow.AddMinutes(-10);
+        var enddate = DateTimeOffset.UtcNow.AddMinutes(-10);
+
+        var fakeLog = NullLogger<GameApiClient>.Instance;
+        var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
+        var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
+
+        var hash = "B6D1904E84D3E2AEF21171A632822AAC";
+        _ = fakeCryptographyUtensil
+            .Md5Encrypt(
+            $"k={apiKey}&a={agentId}")
+            .Returns(hash);
+
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["agentId"] = agentId;
+        query["hash"] = hash;
+        query["startdate"] = startdate.DatetimeConvertToString();
+        query["enddate"] = enddate.DatetimeConvertToString();
+
+        var response = new
+        {
+            Status = "success",
+            Data = Array.Empty<object>(),
+            Message = string.Empty
+        };
+        var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        var handler = new MockHttpMessageHandler();
+        _ = handler
+            .Expect(HttpMethod.Get, "/api/sb/betinfo")
+                    .WithQueryString(query.ToString())
+                    .Respond(HttpStatusCode.OK, responseContent);
+
+        var fakeHttpClient = handler.ToHttpClient();
+
+        var client = new GameApiClient(
+            fakeLog,
+            fakeGameApiUtensil,
+            fakeCryptographyUtensil,
+            fakeHttpClient);
+
+        var actual = await client
+              .TicketAsync(
+                  apiUrl: apiUrl,
+                  apiKey: apiKey,
+                  agentId: agentId,
+                  startDate: startdate,
+                  endDate: enddate)
+              .ToArrayAsync()
+              .ConfigureAwait(false)
+              ?? Enumerable.Empty<TicketResult>();
+
+        Assert.NotNull(actual);
+        Assert.False(actual.Any());
+    }
+
+    [Fact]
+    public async Task Pending_Bets()
+    {
+        var apiUrl = new Uri("https://sports-api.ob33club.com/");
+        var apiKey = "G4sL7r0kKFI5Mm317w99";
+        var agentId = "YYTES12";
+        var startdate = DateTimeOffset.UtcNow.AddMinutes(-10);
+        var enddate = DateTimeOffset.UtcNow.AddMinutes(-10);
+
+        var fakeLog = NullLogger<GameApiClient>.Instance;
+        var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
+        var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
+
+        var hash = "B6D1904E84D3E2AEF21171A632822AAC";
+        _ = fakeCryptographyUtensil
+            .Md5Encrypt(
+            $"k={apiKey}&a={agentId}")
+            .Returns(hash);
+
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["agentId"] = agentId;
+        query["hash"] = hash;
+        query["startdate"] = startdate.DatetimeConvertToString();
+        query["enddate"] = enddate.DatetimeConvertToString();
+
+        var response = new
+        {
+            Status = "success",
+            Data = new[] {
+                new {
+                    Id = "OU0792967714",
+                    SDate = "2020-11-30T00:00:00",
+                    TDate = "2020-11-30T20:06:42.77",
+                    kDate = "2020-12-01T01:30:00",
+                    ADate = "2020-11-30T20:06:42.77",
+                    PDate =  null as string,
+                    User = "AG0SSS333",
+                    Sport = "Football",
+                    League = "English Premier League",
+                    Home = "Leicester City",
+                    Away = "Fulham",
+                    Sport_en = "Football",
+                    League_en = "English Premier League",
+                    Home_en = "Leicester City",
+                    Away_en = "Fulham",
+                    Live = "False",
+                    HomeScore = null as string,
+                    AwayScore = null as string,
+                    Status = "-1",
+                    Ft = "h",
+                    OddsType = "MY",
+                    Game = "OU",
+                    Info = "1",
+                    Odds = "0.77",
+                    Side = "o",
+                    Side_en = null as string,
+                    Bamt = "5.0000",
+                    Wamt = "3.8500",
+                    Tresult = null as string,
+                    Fhscore = "0-2",
+                    Ftscore = "1-2",
+                    Fg = "a",
+                    Lg = "h",
+                    Ip = "",
+                    IsMobile = 0,
+                    Commission = "0.0200"
+                }
+            },
+            Message = string.Empty
+        };
+        var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        var handler = new MockHttpMessageHandler();
+        _ = handler
+            .Expect(HttpMethod.Get, "/api/sb/betinfo")
+                    .WithQueryString(query.ToString())
+                    .Respond(HttpStatusCode.OK, responseContent);
+
+        var fakeHttpClient = handler.ToHttpClient();
+
+        var client = new GameApiClient(
+            fakeLog,
+            fakeGameApiUtensil,
+            fakeCryptographyUtensil,
+            fakeHttpClient);
+
+        var actual = await client
+              .TicketAsync(
+                  apiUrl: apiUrl,
+                  apiKey: apiKey,
+                  agentId: agentId,
+                  startDate: startdate,
+                  endDate: enddate)
+              .ToArrayAsync()
+              .ConfigureAwait(false)
+              ?? Enumerable.Empty<TicketResult>();
+
+        Assert.NotNull(actual);
+        Assert.True(actual.Any());
+        Assert.Null(actual.First().ExternalClosedOn);
+    }
+
+    [Fact]
+    public async Task Refunded_Bets()
+    {
+        var apiUrl = new Uri("https://sports-api.ob33club.com/");
+        var apiKey = "G4sL7r0kKFI5Mm317w99";
+        var agentId = "YYTES12";
+        var startdate = DateTimeOffset.UtcNow.AddMinutes(-10);
+        var enddate = DateTimeOffset.UtcNow.AddMinutes(-10);
+
+        var fakeLog = NullLogger<GameApiClient>.Instance;
+        var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
+        var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
+
+        var hash = "B6D1904E84D3E2AEF21171A632822AAC";
+        _ = fakeCryptographyUtensil
+            .Md5Encrypt(
+            $"k={apiKey}&a={agentId}")
+            .Returns(hash);
+
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["agentId"] = agentId;
+        query["hash"] = hash;
+        query["startdate"] = startdate.DatetimeConvertToString();
+        query["enddate"] = enddate.DatetimeConvertToString();
+
+        var response = new
+        {
+            Status = "success",
+            Data = new[] {
+                new {
+                    Id = "OU0792967714",
+                    SDate = "2020-11-30T00:00:00",
+                    TDate = "2020-11-30T20:06:42.77",
+                    kDate = "2020-12-01T01:30:00",
+                    ADate = "2020-11-30T20:06:42.77",
+                    PDate = "2020-12-01T02:21:23.203",
+                    User = "AG0SSS333",
+                    Sport = "Football",
+                    League = "English Premier League",
+                    Home = "Leicester City",
+                    Away = "Fulham",
+                    Sport_en = "Football",
+                    League_en = "English Premier League",
+                    Home_en = "Leicester City",
+                    Away_en = "Fulham",
+                    Live = "False",
+                    HomeScore = null as string,
+                    AwayScore = null as string,
+                    Status = "5",
+                    Ft = "h",
+                    OddsType = "MY",
+                    Game = "OU",
+                    Info = "1",
+                    Odds = "0.77",
+                    Side = "o",
+                    Side_en = null as string,
+                    Bamt = "5.0000",
+                    Wamt = "3.8500",
+                    Tresult = null as string,
+                    Fhscore = "0-2",
+                    Ftscore = "1-2",
+                    Fg = "a",
+                    Lg = "h",
+                    Ip = "",
+                    IsMobile = 0,
+                    Commission = "0.0200"
+                }
+            },
+            Message = string.Empty
+        };
+        var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        var handler = new MockHttpMessageHandler();
+        _ = handler
+            .Expect(HttpMethod.Get, "/api/sb/betinfo")
+                    .WithQueryString(query.ToString())
+                    .Respond(HttpStatusCode.OK, responseContent);
+
+        var fakeHttpClient = handler.ToHttpClient();
+
+        var client = new GameApiClient(
+            fakeLog,
+            fakeGameApiUtensil,
+            fakeCryptographyUtensil,
+            fakeHttpClient);
+
+        var actual = await client
+              .TicketAsync(
+                  apiUrl: apiUrl,
+                  apiKey: apiKey,
+                  agentId: agentId,
+                  startDate: startdate,
+                  endDate: enddate)
+              .ToArrayAsync()
+              .ConfigureAwait(false)
+              ?? Enumerable.Empty<TicketResult>();
+
+        Assert.NotNull(actual);
+        Assert.True(actual.Any());
+        Assert.NotNull(actual.First().ExternalClosedOn);
+    }
+
+    [Fact]
+    public async Task Rejected_Bets()
+    {
+        var apiUrl = new Uri("https://sports-api.ob33club.com/");
+        var apiKey = "G4sL7r0kKFI5Mm317w99";
+        var agentId = "YYTES12";
+        var startdate = DateTimeOffset.UtcNow.AddMinutes(-10);
+        var enddate = DateTimeOffset.UtcNow.AddMinutes(-10);
+
+        var fakeLog = NullLogger<GameApiClient>.Instance;
+        var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
+        var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
+
+        var hash = "B6D1904E84D3E2AEF21171A632822AAC";
+        _ = fakeCryptographyUtensil
+            .Md5Encrypt(
+            $"k={apiKey}&a={agentId}")
+            .Returns(hash);
+
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["agentId"] = agentId;
+        query["hash"] = hash;
+        query["startdate"] = startdate.DatetimeConvertToString();
+        query["enddate"] = enddate.DatetimeConvertToString();
+
+        var response = new
+        {
+            Status = "success",
+            Data = new[] {
+                new {
+                    Id = "OU0792967714",
+                    SDate = "2020-11-30T00:00:00",
+                    TDate = "2020-11-30T20:06:42.77",
+                    kDate = "2020-12-01T01:30:00",
+                    ADate = "2020-11-30T20:06:42.77",
+                    PDate = "2020-12-01T02:21:23.203",
+                    User = "AG0SSS333",
+                    Sport = "Football",
+                    League = "English Premier League",
+                    Home = "Leicester City",
+                    Away = "Fulham",
+                    Sport_en = "Football",
+                    League_en = "English Premier League",
+                    Home_en = "Leicester City",
+                    Away_en = "Fulham",
+                    Live = "False",
+                    HomeScore = null as string,
+                    AwayScore = null as string,
+                    Status = "1",
+                    Ft = "h",
+                    OddsType = "MY",
+                    Game = "OU",
+                    Info = "1",
+                    Odds = "0.77",
+                    Side = "o",
+                    Side_en = null as string,
+                    Bamt = "5.0000",
+                    Wamt = "3.8500",
+                    Tresult = null as string,
+                    Fhscore = "0-2",
+                    Ftscore = "1-2",
+                    Fg = "a",
+                    Lg = "h",
+                    Ip = "",
+                    IsMobile = 0,
+                    Commission = "0.0200"
+                }
+            },
+            Message = string.Empty
+        };
+        var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        var handler = new MockHttpMessageHandler();
+        _ = handler
+            .Expect(HttpMethod.Get, "/api/sb/betinfo")
+                    .WithQueryString(query.ToString())
+                    .Respond(HttpStatusCode.OK, responseContent);
+
+        var fakeHttpClient = handler.ToHttpClient();
+
+        var client = new GameApiClient(
+            fakeLog,
+            fakeGameApiUtensil,
+            fakeCryptographyUtensil,
+            fakeHttpClient);
+
+        var actual = await client
+              .TicketAsync(
+                  apiUrl: apiUrl,
+                  apiKey: apiKey,
+                  agentId: agentId,
+                  startDate: startdate,
+                  endDate: enddate)
+              .ToArrayAsync()
+              .ConfigureAwait(false)
+              ?? Enumerable.Empty<TicketResult>();
+
+        Assert.NotNull(actual);
+        Assert.True(actual.Any());
+        Assert.NotNull(actual.First().ExternalClosedOn);
+    }
+
+    [Fact]
+    public async Task Settlement_Bets()
     {
         var apiUrl = new Uri("https://sports-api.ob33club.com/");
         var apiKey = "G4sL7r0kKFI5Mm317w99";
@@ -116,7 +586,7 @@ public class TicketUnitTest
     }
 
     [Fact]
-    public async Task Normal_Process_Unsettled()
+    public async Task Unsettled_Bets()
     {
         var apiUrl = new Uri("https://sports-api.ob33club.com/");
         var apiKey = "G4sL7r0kKFI5Mm317w99";
@@ -150,7 +620,7 @@ public class TicketUnitTest
                     TDate = "2020-11-30T20:06:42.77",
                     kDate = "2020-12-01T01:30:00",
                     ADate = "2020-11-30T20:06:42.77",
-                    PDate = "2020-12-01T02:21:23.203",
+                    PDate =  null as string,
                     User = "AG0SSS333",
                     Sport = "Football",
                     League = "English Premier League",
@@ -215,67 +685,5 @@ public class TicketUnitTest
         Assert.NotNull(actual);
         Assert.True(actual.Any());
         Assert.Null(actual.First().ExternalClosedOn);
-    }
-
-    [Fact]
-    public async Task Data_Is_Empty()
-    {
-        var apiUrl = new Uri("https://sports-api.ob33club.com/");
-        var apiKey = "G4sL7r0kKFI5Mm317w99";
-        var agentId = "YYTES12";
-        var startdate = DateTimeOffset.UtcNow.AddMinutes(-10);
-        var enddate = DateTimeOffset.UtcNow.AddMinutes(-10);
-
-        var fakeLog = NullLogger<GameApiClient>.Instance;
-        var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
-        var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
-
-        var hash = "B6D1904E84D3E2AEF21171A632822AAC";
-        _ = fakeCryptographyUtensil
-            .Md5Encrypt(
-            $"k={apiKey}&a={agentId}")
-            .Returns(hash);
-
-        var query = HttpUtility.ParseQueryString(string.Empty);
-        query["agentId"] = agentId;
-        query["hash"] = hash;
-        query["startdate"] = startdate.DatetimeConvertToString();
-        query["enddate"] = enddate.DatetimeConvertToString();
-
-        var response = new
-        {
-            Status = "success",
-            Data = Array.Empty<object>(),
-            Message = string.Empty
-        };
-        var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
-
-        var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
-
-        var fakeHttpClient = handler.ToHttpClient();
-
-        var client = new GameApiClient(
-            fakeLog,
-            fakeGameApiUtensil,
-            fakeCryptographyUtensil,
-            fakeHttpClient);
-
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
-
-        Assert.NotNull(actual);
-        Assert.False(actual.Any());
     }
 }

@@ -11,11 +11,19 @@ public interface IGameApiClient
         string playerCode,
         CancellationToken cancellationToken = default);
 
-    public ValueTask UpdateAccountAsync(
+    public ValueTask<BalanceResult> GetUserBalanceAsync(
         Uri apiUrl,
         string apiKey,
         string agentId,
         string playerCode,
+        CancellationToken cancellationToken = default);
+
+    public IAsyncEnumerable<TicketResult> TicketAsync(
+        Uri apiUrl,
+        string apiKey,
+        string agentId,
+        DateTimeOffset startDate,
+        DateTimeOffset endDate,
         CancellationToken cancellationToken = default);
 
     public ValueTask TransferFundAsync(
@@ -35,8 +43,8 @@ public interface IGameApiClient
         string serialNo,
         CancellationToken cancellationToken = default);
 
-    public ValueTask<BalanceResult> GetUserBalanceAsync(
-        Uri apiUrl,
+    public ValueTask UpdateAccountAsync(
+                        Uri apiUrl,
         string apiKey,
         string agentId,
         string playerCode,
@@ -56,13 +64,5 @@ public interface IGameApiClient
         string apiKey,
         string agentId,
         string playerCode,
-        CancellationToken cancellationToken = default);
-
-    public IAsyncEnumerable<TicketResult> TicketAsync(
-        Uri apiUrl,
-        string apiKey,
-        string agentId,
-        DateTimeOffset startDate,
-        DateTimeOffset endDate,
         CancellationToken cancellationToken = default);
 }

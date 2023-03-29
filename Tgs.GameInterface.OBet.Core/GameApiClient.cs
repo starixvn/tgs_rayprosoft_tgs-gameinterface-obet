@@ -14,10 +14,10 @@ namespace Tgs.GameInterface.OBet.Core;
 
 internal class GameApiClient : IGameApiClient
 {
-    private readonly ILogger<GameApiClient> _logger;
-    private readonly IGameApiUtensil _gameApiUtensil;
-    private readonly ICryptographyUtensil _cryptographyUtensil;
     private readonly HttpClient _client;
+    private readonly ICryptographyUtensil _cryptographyUtensil;
+    private readonly IGameApiUtensil _gameApiUtensil;
+    private readonly ILogger<GameApiClient> _logger;
 
     public GameApiClient(
         ILogger<GameApiClient> logger,
@@ -29,39 +29,6 @@ internal class GameApiClient : IGameApiClient
         _gameApiUtensil = gameApiUtensil ?? throw new ArgumentNullException(nameof(gameApiUtensil));
         _cryptographyUtensil = cryptographyUtensil ?? throw new ArgumentNullException(nameof(cryptographyUtensil));
         _client = client ?? throw new ArgumentNullException(nameof(client));
-    }
-
-    public async ValueTask<BalanceResult> GetUserBalanceAsync(
-        Uri apiUrl,
-        string apiKey,
-        string agentId,
-        string playerCode,
-        CancellationToken cancellationToken = default)
-    {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
-        var query = HttpUtility.ParseQueryString(string.Empty);
-        query["agentId"] = agentId;
-        query["userId"] = userId;
-        query["hash"] = hash;
-        var url = new Uri(apiUrl, $"/api/sb/bal?{query}");
-
-        var (StatusCode, JsonNode) = await GetAsync(
-                apiUrl: url,
-                logPrefix: " GetUserBalance",
-                cancellationToken: cancellationToken)
-            .ConfigureAwait(false);
-
-        if (StatusCode != HttpStatusCode.OK)
-        {
-            return StatusCode == HttpStatusCode.NotFound
-               ? new BalanceResult(false, 0)
-               : throw new Exception($"The game provider responded with an error.({JsonNode.ToJsonString()})");
-        }
-
-        var balance = JsonNode["Data"]!["Balance"]!.GetValue<decimal>();
-
-        return new BalanceResult(true, balance);
     }
 
     public async ValueTask CreateAccountAsync(
@@ -92,6 +59,39 @@ internal class GameApiClient : IGameApiClient
         {
             throw new Exception($"This player failed to create.({JsonNode.ToJsonString()})");
         }
+    }
+
+    public async ValueTask<BalanceResult> GetUserBalanceAsync(
+            Uri apiUrl,
+        string apiKey,
+        string agentId,
+        string playerCode,
+        CancellationToken cancellationToken = default)
+    {
+        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["agentId"] = agentId;
+        query["userId"] = userId;
+        query["hash"] = hash;
+        var url = new Uri(apiUrl, $"/api/sb/bal?{query}");
+
+        var (StatusCode, JsonNode) = await GetAsync(
+                apiUrl: url,
+                logPrefix: " GetUserBalance",
+                cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        if (StatusCode != HttpStatusCode.OK)
+        {
+            return StatusCode == HttpStatusCode.NotFound
+               ? new BalanceResult(false, 0)
+               : throw new Exception($"The game provider responded with an error.({JsonNode.ToJsonString()})");
+        }
+
+        var balance = JsonNode["Data"]!["Balance"]!.GetValue<decimal>();
+
+        return new BalanceResult(true, balance);
     }
 
     public async IAsyncEnumerable<TicketResult> TicketAsync(
@@ -141,7 +141,7 @@ internal class GameApiClient : IGameApiClient
             var satus = (TicketSatus)Convert.ToInt32(data["Status"]!.ToString());
             var winLossStatus = (data["Tresult"] is null) ? default(TicketWinLossStatus?) : (TicketWinLossStatus)Convert.ToInt32(data["Tresult"]!.ToString());
 
-            yield return satus == TicketSatus.Accepted && !winLossStatus.HasValue
+            yield return (satus == TicketSatus.Accepted || satus == TicketSatus.Pending) && !winLossStatus.HasValue
                 ? new TicketResult(
                     ExternalRoundId: data["Id"]!.GetValue<string>(),
                     UserId: data["User"]!.GetValue<string>(),
@@ -237,8 +237,38 @@ internal class GameApiClient : IGameApiClient
         return true;
     }
 
-    public async ValueTask<UserLoginResult> UserLoginAsync(
+    public async ValueTask UpdateAccountAsync(
         Uri apiUrl,
+        string apiKey,
+        string agentId,
+        string playerCode,
+        CancellationToken cancellationToken = default)
+    {
+        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var parameters = new
+        {
+            hash,
+            agentId,
+            userId
+        };
+
+        var (StatusCode, JsonNode) = await PostAsync(
+                apiUrl: apiUrl,
+                path: "/api/sb/register",
+                parameters: parameters,
+                logPrefix: "UpdateAccount",
+                cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        if (StatusCode != HttpStatusCode.OK)
+        {
+            throw new Exception($"This player modification failed({JsonNode.ToJsonString()})");
+        }
+    }
+
+    public async ValueTask<UserLoginResult> UserLoginAsync(
+            Uri apiUrl,
         string apiKey,
         string agentId,
         string playerCode,
@@ -303,36 +333,6 @@ internal class GameApiClient : IGameApiClient
             {
                 throw new Exception($"The game provider responded with an error.({JsonNode.ToJsonString()})");
             }
-        }
-    }
-
-    public async ValueTask UpdateAccountAsync(
-        Uri apiUrl,
-        string apiKey,
-        string agentId,
-        string playerCode,
-        CancellationToken cancellationToken = default)
-    {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
-        var parameters = new
-        {
-            hash,
-            agentId,
-            userId
-        };
-
-        var (StatusCode, JsonNode) = await PostAsync(
-                apiUrl: apiUrl,
-                path: "/api/sb/register",
-                parameters: parameters,
-                logPrefix: "UpdateAccount",
-                cancellationToken: cancellationToken)
-            .ConfigureAwait(false);
-
-        if (StatusCode != HttpStatusCode.OK)
-        {
-            throw new Exception($"This player modification failed({JsonNode.ToJsonString()})");
         }
     }
 

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using Tgs.GameInterface.OBet.Core.Models;
 using Tgs.ServiceUtility;
@@ -8,8 +7,8 @@ namespace Tgs.GameInterface.OBet.Core.ApplicationServices;
 
 internal class GameRecordQueryService : IQueryService<GameRecordQuery, GameRecordResult>
 {
-    private readonly ILogger<GameRecordQueryService> _logger;
     private readonly IGameApiClient _client;
+    private readonly ILogger<GameRecordQueryService> _logger;
 
     public GameRecordQueryService(
         ILogger<GameRecordQueryService> logger,
@@ -57,9 +56,7 @@ internal class GameRecordQueryService : IQueryService<GameRecordQuery, GameRecor
                 _ => result.WinLossStatus is not null
             };
 
-
             var isVoid = result.Status != TicketSatus.Accepted;
-
 
             yield return new GameRecordResult(
                 ExternalRoundId: result.ExternalRoundId,
