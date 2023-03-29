@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddGameInterfaceFaChaiClient(
+    public static IServiceCollection AddGameInterfaceOBetClient(
         this IServiceCollection services,
         Action<GameInterfaceOBetClientOptions, IServiceProvider> configure)
         => services
