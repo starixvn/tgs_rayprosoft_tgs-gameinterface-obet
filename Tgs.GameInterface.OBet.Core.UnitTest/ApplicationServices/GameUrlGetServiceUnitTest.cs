@@ -12,7 +12,7 @@ public class GameUrlGetServiceUnitTest
         var fakeGameApiClient = Substitute.For<IGameApiClient>();
 
         var query = new GameUrlQuery(
-            ApiUrl: new Uri("http://api.fcg666.net/"),
+            ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
             AgentId: "agentId",
             PlayerCode: "4ucmqplxb029",

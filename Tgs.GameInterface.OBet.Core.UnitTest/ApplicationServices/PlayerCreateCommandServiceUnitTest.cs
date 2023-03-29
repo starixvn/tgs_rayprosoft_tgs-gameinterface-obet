@@ -11,7 +11,7 @@ public class PlayerCreateCommandServiceUnitTest
         var fakeGameApiClient = Substitute.For<IGameApiClient>();
 
         var command = new PlayerCreateCommand(
-            ApiUrl: new Uri("http://api.fcg666.net/"),
+            ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
             AgentId: "agentId",
             PlayerCode: "4ucmqplxb029");
