@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Drawing;
+using System;
+using System.Net;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -8,6 +10,7 @@ using NSubstitute;
 using RichardSzalay.MockHttp;
 using Tgs.GameInterface.OBet.Core.Extensions;
 using Tgs.GameInterface.OBet.Core.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Tgs.GameInterface.OBet.Core.UnitTest;
 
@@ -614,45 +617,44 @@ public class TicketUnitTest
         {
             Status = "success",
             Data = new[] {
-                new {
-                    Id = "OU0792967714",
-                    SDate = "2020-11-30T00:00:00",
-                    TDate = "2020-11-30T20:06:42.77",
-                    kDate = "2020-12-01T01:30:00",
-                    ADate = "2020-11-30T20:06:42.77",
-                    PDate =  null as string,
-                    User = "AG0SSS333",
-                    Sport = "Football",
-                    League = "English Premier League",
-                    Home = "Leicester City",
-                    Away = "Fulham",
-                    Sport_en = "Football",
-                    League_en = "English Premier League",
-                    Home_en = "Leicester City",
-                    Away_en = "Fulham",
-                    Live = "False",
-                    HomeScore = null as string,
-                    AwayScore = null as string,
-                    Status = "0",
-                    Ft = "h",
-                    OddsType = "MY",
-                    Game = "OU",
-                    Info = "1",
-                    Odds = "0.77",
-                    Side = "o",
-                    Side_en = null as string,
-                    Bamt = "5.0000",
-                    Wamt = "3.8500",
-                    Tresult = null as string,
-                    Fhscore = "0-2",
-                    Ftscore = "1-2",
-                    Fg = "a",
-                    Lg = "h",
-                    Ip = "",
-                    IsMobile = 0,
-                    Commission = "0.0200"
-                }
-            },
+                new{
+                    Id= "OU1459720030614",
+                    SDate= "2023-03-29T00:00:00",
+                    TDate= "2023-03-29T17:18:51.82",
+                    KDate= "2023-03-29T18:00:00",
+                    ADate= "2023-03-29T17:18:51.82",
+                    PDate= "0001-01-01T00:00:00",
+                    User= "YYTES124UCMQPLXB029",
+                    Sport= "Football",
+                    League= "Japan J2 League",
+                    Home= "Jubilo Iwata",
+                    Away= "Tochigi SC",
+                    Sport_en= "Football",
+                    League_en= "Japan J2 League",
+                    Home_en= "Jubilo Iwata",
+                    Away_en= "Tochigi SC",
+                    Live= "False",
+                    HomeScore= null as object,
+                    AwayScore= null as object,
+                    Status= "0",
+                    FT= "f",
+                    OddsType= "HK",
+                    Game= "OU",
+                    Info= "2",
+                    Odds= "1.09",
+                    Side= "o",
+                    Side_en= null as object,
+                    Bamt= "10.0000",
+                    Wamt= null as object,
+                    Tresult= null as object,
+                    Fhscore= null as object,
+                    Ftscore= null as object,
+                    FG= null as object,
+                    LG= null as object,
+                    IP= "114.33.41.237-TW",
+                    IsMobile= 0,
+                    Commission= null as object}
+        },
             Message = string.Empty
         };
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
@@ -660,8 +662,8 @@ public class TicketUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+                        .WithQueryString(query.ToString())
+                        .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
