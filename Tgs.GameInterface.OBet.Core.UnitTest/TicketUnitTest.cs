@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -10,7 +8,6 @@ using NSubstitute;
 using RichardSzalay.MockHttp;
 using Tgs.GameInterface.OBet.Core.Extensions;
 using Tgs.GameInterface.OBet.Core.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Tgs.GameInterface.OBet.Core.UnitTest;
 
