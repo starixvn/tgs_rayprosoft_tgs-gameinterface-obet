@@ -11,9 +11,9 @@ data:
           "LogLevel": {
             "Default": "Warning",
             "Microsoft.AspNetCore": "Warning",
-            "Tgs.GameInterface.OBet.Core": "Information",
+            "Tgs.GameInterface.OBet.Core": "Information"
           }
-        }
+        },
         "Kestrel": {
           "EndpointDefaults": {
                 "Protocols": "Http2"
