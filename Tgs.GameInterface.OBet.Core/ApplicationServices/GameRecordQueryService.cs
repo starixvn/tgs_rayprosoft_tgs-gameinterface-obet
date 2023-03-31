@@ -60,7 +60,7 @@ internal class GameRecordQueryService : IQueryService<GameRecordQuery, GameRecor
 
             yield return new GameRecordResult(
                 ExternalRoundId: result.ExternalRoundId,
-                PlayerCode: result.UserId.Replace(query.AgentId, string.Empty),
+                PlayerCode: result.UserId.Replace(query.AgentId, string.Empty).ToLower(),
                 IsClosed: isClosed,
                 IsVoid: isVoid,
                 ExternalCreatedOn: result.ExternalCreatedOn,

@@ -484,7 +484,7 @@ public class TicketUnitTest
     }
 
     [Fact]
-    public async Task Settlement_Bets()
+    public async Task Settlement_Bets_Lose()
     {
         var apiUrl = new Uri("https://sports-api.ob33club.com/");
         var apiKey = "G4sL7r0kKFI5Mm317w99";
@@ -583,6 +583,110 @@ public class TicketUnitTest
         Assert.NotNull(actual);
         Assert.True(actual.Any());
         Assert.NotNull(actual.First().ExternalClosedOn);
+        Assert.Equal(TicketWinLossStatus.Lose, actual.First().WinLossStatus!.Value);
+    }
+
+    [Fact]
+    public async Task Settlement_Bets_Draw()
+    {
+        var apiUrl = new Uri("https://sports-api.ob33club.com/");
+        var apiKey = "G4sL7r0kKFI5Mm317w99";
+        var agentId = "YYTES12";
+        var startDate = DateTimeOffset.UtcNow.AddMinutes(-10);
+        var endDate = DateTimeOffset.UtcNow.AddMinutes(-10);
+
+        var fakeLog = NullLogger<GameApiClient>.Instance;
+        var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
+        var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
+
+        var hash = "B6D1904E84D3E2AEF21171A632822AAC";
+        _ = fakeCryptographyUtensil
+            .Md5Encrypt(
+            $"k={apiKey}&a={agentId}")
+            .Returns(hash);
+
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["agentId"] = agentId;
+        query["hash"] = hash;
+        query["startdate"] = startDate.DatetimeConvertToString();
+        query["enddate"] = endDate.DatetimeConvertToString();
+
+        var response = new
+        {
+            Status = "success",
+            Data = new[] {
+                new {
+                    Id= "OU1459720030614",
+                    SDate= "2023-03-29T00:00:00",
+                    TDate= "2023-03-29T17:18:51.82",
+                    KDate= "2023-03-29T18:00:00",
+                    ADate= "2023-03-29T17:18:51.82",
+                    PDate= "2023-03-29T20:00:15.78",
+                    User= "YYTES124UCMQPLXB029",
+                    Sport= "Football",
+                    League= "Japan J2 League",
+                    Home= "Jubilo Iwata",
+                    Away= "Tochigi SC",
+                    Sport_en= "Football",
+                    League_en= "Japan J2 League",
+                    Home_en= "Jubilo Iwata",
+                    Away_en= "Tochigi SC",
+                    Live= "False",
+                    HomeScore= null as object,
+                    AwayScore= null as object,
+                    Status= "0",
+                    FT= "f",
+                    OddsType= "HK",
+                    Game= "OU",
+                    Info= "2",
+                    Odds= "1.09",
+                    Side= "o",
+                    Side_en= null as object,
+                    Bamt= "10.0000",
+                    Wamt= "0.0000",
+                    Tresult= "2",
+                    Fhscore= "1-0",
+                    Ftscore= "2-0",
+                    FG= "h",
+                    LG= "h",
+                    IP= "114.33.41.237-TW",
+                    IsMobile= 0,
+                    Commission= "0.0000"
+                }
+            },
+            Message = string.Empty
+        };
+        var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        var handler = new MockHttpMessageHandler();
+        _ = handler
+            .Expect(HttpMethod.Get, "/api/sb/betinfo")
+                    .WithQueryString(query.ToString())
+                    .Respond(HttpStatusCode.OK, responseContent);
+
+        var fakeHttpClient = handler.ToHttpClient();
+
+        var client = new GameApiClient(
+            fakeLog,
+            fakeGameApiUtensil,
+            fakeCryptographyUtensil,
+            fakeHttpClient);
+
+        var actual = await client
+              .TicketAsync(
+                  apiUrl: apiUrl,
+                  apiKey: apiKey,
+                  agentId: agentId,
+                  startDate: startDate,
+                  endDate: endDate)
+              .ToArrayAsync()
+              .ConfigureAwait(false)
+              ?? Enumerable.Empty<TicketResult>();
+
+        Assert.NotNull(actual);
+        Assert.True(actual.Any());
+        Assert.NotNull(actual.First().ExternalClosedOn);
+        Assert.Equal(TicketWinLossStatus.Draw, actual.First().WinLossStatus!.Value);
     }
 
     [Fact]

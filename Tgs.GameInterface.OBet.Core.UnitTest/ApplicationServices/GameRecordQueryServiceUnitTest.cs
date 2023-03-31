@@ -16,14 +16,14 @@ public class GameRecordQueryServiceUnitTest
         var query = new GameRecordQuery(
             ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
-            AgentId: "agentId",
+            AgentId: "YYTES12",
             StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
             EndDate: DateTimeOffset.UtcNow);
 
         var results = new TicketResult[] {
         new(
             Guid.NewGuid().ToString("N"),
-            "4ucmqplxb029",
+            "YYTES124UCMQPLXB029",
             TicketSatus.Cancelled,
             null,
             DateTimeOffset.UtcNow.AddMinutes(-1),
@@ -54,6 +54,7 @@ public class GameRecordQueryServiceUnitTest
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
+        Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.True(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
     }
@@ -67,14 +68,14 @@ public class GameRecordQueryServiceUnitTest
         var query = new GameRecordQuery(
             ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
-            AgentId: "agentId",
+            AgentId: "YYTES12",
             StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
             EndDate: DateTimeOffset.UtcNow);
 
         var results = new TicketResult[] {
         new(
             Guid.NewGuid().ToString("N"),
-            "4ucmqplxb029",
+            "YYTES124UCMQPLXB029",
             TicketSatus.Pending,
             null,
             DateTimeOffset.UtcNow.AddMinutes(-1),
@@ -116,14 +117,14 @@ public class GameRecordQueryServiceUnitTest
         var query = new GameRecordQuery(
             ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
-            AgentId: "agentId",
+            AgentId: "YYTES12",
             StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
             EndDate: DateTimeOffset.UtcNow);
 
         var results = new TicketResult[] {
         new(
             Guid.NewGuid().ToString("N"),
-            "4ucmqplxb029",
+            "YYTES124UCMQPLXB029",
             TicketSatus.Refunded,
             null,
             DateTimeOffset.UtcNow.AddMinutes(-1),
@@ -154,6 +155,7 @@ public class GameRecordQueryServiceUnitTest
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
+        Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.True(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
     }
@@ -167,14 +169,14 @@ public class GameRecordQueryServiceUnitTest
         var query = new GameRecordQuery(
             ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
-            AgentId: "agentId",
+            AgentId: "YYTES12",
             StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
             EndDate: DateTimeOffset.UtcNow);
 
         var results = new TicketResult[] {
         new(
             Guid.NewGuid().ToString("N"),
-            "4ucmqplxb029",
+            "YYTES124UCMQPLXB029",
             TicketSatus.Rejected,
             null,
             DateTimeOffset.UtcNow.AddMinutes(-1),
@@ -205,6 +207,7 @@ public class GameRecordQueryServiceUnitTest
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
+        Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.True(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
     }
@@ -218,14 +221,14 @@ public class GameRecordQueryServiceUnitTest
         var query = new GameRecordQuery(
             ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
-            AgentId: "agentId",
+            AgentId: "YYTES12",
             StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
             EndDate: DateTimeOffset.UtcNow);
 
         var results = new TicketResult[] {
         new(
             Guid.NewGuid().ToString("N"),
-            "4ucmqplxb029",
+            "YYTES124UCMQPLXB029",
             TicketSatus.Accepted,
             TicketWinLossStatus.Win,
             DateTimeOffset.UtcNow.AddMinutes(-1),
@@ -256,6 +259,7 @@ public class GameRecordQueryServiceUnitTest
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
+        Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.False(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
         Assert.Equal(1100m, actual.First().Settle);
@@ -270,14 +274,14 @@ public class GameRecordQueryServiceUnitTest
         var query = new GameRecordQuery(
             ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
-            AgentId: "agentId",
+            AgentId: "YYTES12",
             StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
             EndDate: DateTimeOffset.UtcNow);
 
         var results = new TicketResult[] {
         new(
             Guid.NewGuid().ToString("N"),
-            "4ucmqplxb029",
+            "YYTES124UCMQPLXB029",
             TicketSatus.Accepted,
             null,
             DateTimeOffset.UtcNow,
@@ -309,6 +313,7 @@ public class GameRecordQueryServiceUnitTest
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
+        Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.False(actual.First().IsVoid);
         Assert.False(actual.First().IsClosed);
     }
