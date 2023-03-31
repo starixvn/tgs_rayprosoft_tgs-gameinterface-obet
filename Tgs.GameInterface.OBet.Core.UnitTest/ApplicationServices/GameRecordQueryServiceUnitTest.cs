@@ -169,19 +169,19 @@ public class GameRecordQueryServiceUnitTest
         var query = new GameRecordQuery(
             ApiUrl: new Uri("https://sports-api.ob33club.com/"),
             ApiKey: "apiKey",
-            AgentId: "YYTES12",
+            AgentId: "YYTES12CNY",
             StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
             EndDate: DateTimeOffset.UtcNow);
 
         var results = new TicketResult[] {
         new(
             Guid.NewGuid().ToString("N"),
-            "YYTES124UCMQPLXB029",
+            "YYTES12CNY4UGZ7KLO94OA",
             TicketSatus.Rejected,
             null,
             DateTimeOffset.UtcNow.AddMinutes(-1),
             DateTimeOffset.UtcNow,
-            1000,
+            10,
             0,
             0,
             "{}" )};
@@ -207,13 +207,13 @@ public class GameRecordQueryServiceUnitTest
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
-        Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
+        Assert.Equal("4ugz7klo94oa", actual.First().PlayerCode);
         Assert.True(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
     }
 
     [Fact]
-    public async Task Settlement_Bets()
+    public async Task Settlement_Bets_Lose()
     {
         var fakeLog = NullLogger<GameRecordQueryService>.Instance;
         var fakeGameApiClient = Substitute.For<IGameApiClient>();
@@ -230,12 +230,12 @@ public class GameRecordQueryServiceUnitTest
             Guid.NewGuid().ToString("N"),
             "YYTES124UCMQPLXB029",
             TicketSatus.Accepted,
-            TicketWinLossStatus.Win,
+            TicketWinLossStatus.Lose,
             DateTimeOffset.UtcNow.AddMinutes(-1),
             DateTimeOffset.UtcNow,
-            1000,
+            10,
             0,
-            100,
+            -10,
             "{}" )};
         _ = fakeGameApiClient
              .TicketAsync(
@@ -262,7 +262,64 @@ public class GameRecordQueryServiceUnitTest
         Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.False(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
-        Assert.Equal(1100m, actual.First().Settle);
+        Assert.Equal(10m, actual.First().Bet);
+        Assert.Equal(0m, actual.First().Settle);
+        Assert.Equal(-10m, actual.First().WinLoss);
+    }
+
+    [Fact]
+    public async Task Settlement_Bets_Win()
+    {
+        var fakeLog = NullLogger<GameRecordQueryService>.Instance;
+        var fakeGameApiClient = Substitute.For<IGameApiClient>();
+
+        var query = new GameRecordQuery(
+            ApiUrl: new Uri("https://sports-api.ob33club.com/"),
+            ApiKey: "apiKey",
+            AgentId: "YYTES12CNY",
+            StartDate: DateTimeOffset.UtcNow.AddMinutes(-10),
+            EndDate: DateTimeOffset.UtcNow);
+
+        var results = new TicketResult[] {
+        new(
+            Guid.NewGuid().ToString("N"),
+            "YYTES12CNY4UGZ7KLO94OA",
+            TicketSatus.Accepted,
+            TicketWinLossStatus.Win,
+            DateTimeOffset.UtcNow.AddMinutes(-1),
+            DateTimeOffset.UtcNow,
+            10m,
+            0,
+            9.6m,
+            "{}" )};
+        _ = fakeGameApiClient
+             .TicketAsync(
+                 apiUrl: Arg.Is(query.ApiUrl),
+                 apiKey: Arg.Is(query.ApiKey),
+                 agentId: Arg.Is(query.AgentId),
+                 startDate: Arg.Is(query.StartDate),
+                 endDate: Arg.Is(query.EndDate),
+                 cancellationToken: Arg.Any<CancellationToken>())
+             .Returns(results.ToAsyncEnumerable());
+
+        var client = new GameRecordQueryService(
+            fakeLog,
+            fakeGameApiClient);
+
+        var actual = await client
+            .QueryAsync(
+               query)
+            .ToArrayAsync()
+           .ConfigureAwait(false);
+
+        Assert.NotNull(actual);
+        Assert.True(actual.Any());
+        Assert.Equal("4ugz7klo94oa", actual.First().PlayerCode);
+        Assert.False(actual.First().IsVoid);
+        Assert.True(actual.First().IsClosed);
+        Assert.Equal(10m, actual.First().Bet);
+        Assert.Equal(19.6m, actual.First().Settle);
+        Assert.Equal(9.6m, actual.First().WinLoss);
     }
 
     [Fact]
