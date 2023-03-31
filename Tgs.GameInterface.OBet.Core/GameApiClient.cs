@@ -140,6 +140,9 @@ internal class GameApiClient : IGameApiClient
 
             var satus = (TicketSatus)Convert.ToInt32(data["Status"]!.ToString());
             var winLossStatus = (data["Tresult"] is null) ? default(TicketWinLossStatus?) : (TicketWinLossStatus)Convert.ToInt32(data["Tresult"]!.ToString());
+            var bet = (data["Bamt"] is null) ? 0 : Convert.ToDecimal(data["Bamt"]!.ToString());
+            var commission = (data["Commission"] is null) ? 0 : Convert.ToDecimal(data["Commission"]!.ToString());
+            var wamt = (data["Wamt"] is null) ? 0 : Convert.ToDecimal(data["Wamt"]!.ToString());
 
             yield return (satus == TicketSatus.Accepted || satus == TicketSatus.Pending) && !winLossStatus.HasValue
                 ? new TicketResult(
@@ -160,9 +163,9 @@ internal class GameApiClient : IGameApiClient
                     WinLossStatus: winLossStatus,
                     ExternalCreatedOn: data["TDate"]!.GetValue<string>().StringConvertToDatetime(),
                     ExternalClosedOn: data["PDate"]!.GetValue<string>().StringConvertToDatetime(),
-                    Bet: Convert.ToDecimal(data["Bamt"]!.ToString()),
-                    Commission: Convert.ToDecimal(data["Commission"]!.ToString()),
-                    WinLoss: Convert.ToDecimal(data["Wamt"]!.ToString()),
+                    Bet: bet,
+                    Commission: commission,
+                    WinLoss: wamt,
                     AdditionalData: data.ToJsonString());
         }
     }
