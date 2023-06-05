@@ -78,7 +78,7 @@ internal class GameApiClient : IGameApiClient
 
         var (StatusCode, JsonNode) = await GetAsync(
                 apiUrl: url,
-                logPrefix: " GetUserBalance",
+                logPrefix: "GetUserBalance",
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
@@ -113,7 +113,7 @@ internal class GameApiClient : IGameApiClient
 
         var (StatusCode, JsonNode) = await GetAsync(
                 apiUrl: url,
-                logPrefix: " Ticket",
+                logPrefix: "Ticket",
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
@@ -291,7 +291,7 @@ internal class GameApiClient : IGameApiClient
 
         var (StatusCode, JsonNode) = await GetAsync(
                 apiUrl: url,
-                logPrefix: " UserLogin",
+                logPrefix: "UserLogin",
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
@@ -326,7 +326,7 @@ internal class GameApiClient : IGameApiClient
 
         var (StatusCode, JsonNode) = await GetAsync(
                 apiUrl: url,
-                logPrefix: " UserLogout",
+                logPrefix: "UserLogout",
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
