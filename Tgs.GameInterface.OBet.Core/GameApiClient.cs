@@ -62,7 +62,7 @@ internal class GameApiClient : IGameApiClient
     }
 
     public async ValueTask<BalanceResult> GetUserBalanceAsync(
-            Uri apiUrl,
+        Uri apiUrl,
         string apiKey,
         string agentId,
         string playerCode,
@@ -79,6 +79,10 @@ internal class GameApiClient : IGameApiClient
         var (StatusCode, JsonNode) = await GetAsync(
                 apiUrl: url,
                 logPrefix: " GetUserBalance",
+                cancellationToken: cancellationToken)
+            .AsTask()
+            .WaitAsync(
+                timeout: TimeSpan.FromSeconds(15),
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
@@ -271,7 +275,7 @@ internal class GameApiClient : IGameApiClient
     }
 
     public async ValueTask<UserLoginResult> UserLoginAsync(
-            Uri apiUrl,
+        Uri apiUrl,
         string apiKey,
         string agentId,
         string playerCode,
