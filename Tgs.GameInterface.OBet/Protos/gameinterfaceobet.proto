@@ -13,6 +13,7 @@ service GameInterfaceOBet {
   rpc PlayerCreate (PlayerCreateRequest) returns (BaseReply);
   rpc PlayerBalance (PlayerBalanceRequest) returns (PlayerBalanceReply);
   rpc PlayerLogout (PlayerLogoutRequest) returns (BaseReply);
+  rpc PlayerUpdateBetLimit (PlayerUpdateBetLimitRequest) returns (BaseReply);
   rpc FundIn (FundRequest) returns (FundReply);
   rpc FundOut (FundRequest) returns (FundReply);
   rpc FundStatus(FundStatusRequest) returns (BaseReply);
@@ -27,6 +28,20 @@ message PlayerCreateRequest {
 	string api_key = 2;
 	string agent_id = 3;
 	string player_code = 4;
+}
+
+message PlayerUpdateBetLimitRequest{
+	string api_url = 1;
+	string api_key = 2;
+	string agent_id = 3;
+	string player_code = 4;
+	phoenix.protobuf.DecimalValue max_bet_grp_hdp = 5;
+    phoenix.protobuf.DecimalValue max_bet_grp_basket_ball = 6;
+    phoenix.protobuf.DecimalValue max_bet_grp_others_sport = 7;
+    phoenix.protobuf.DecimalValue max_bet_grp_1x2 = 8;
+    phoenix.protobuf.DecimalValue max_bet_grp_mix_parlay = 9;
+    phoenix.protobuf.DecimalValue max_bet_grp_others_odds = 10;
+    phoenix.protobuf.DecimalValue max_bet_grp_special = 11;
 }
 
 message PlayerBalanceRequest {

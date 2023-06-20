@@ -17,6 +17,7 @@ namespace Tgs.GameInterface.OBet.GrpcServices
         private readonly IGetService<PlayerBalanceQuery, PlayerBalanceResult> _playerBalanceService;
         private readonly ICommandService<PlayerCreateCommand> _playerCreateService;
         private readonly ICommandService<PlayerLogoutCommand> _playerLogoutService;
+        private readonly ICommandService<PlayerUpdateBetLimitCommand> _playerUpdateBetLimitService;
 
         public GameInterfaceOBetGrpcService(
             ILogger<GameInterfaceOBetGrpcService> logger,
@@ -27,7 +28,8 @@ namespace Tgs.GameInterface.OBet.GrpcServices
             IGetService<GameUrlQuery, GameUrlResult> gameUrlService,
             IGetService<PlayerBalanceQuery, PlayerBalanceResult> playerBalanceService,
             ICommandService<PlayerCreateCommand> playerCreateService,
-            ICommandService<PlayerLogoutCommand> PlayerLogoutService)
+            ICommandService<PlayerLogoutCommand> PlayerLogoutService,
+            ICommandService<PlayerUpdateBetLimitCommand> playerUpdateBetLimitService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _fundInService = fundInService ?? throw new ArgumentNullException(nameof(fundInService));
@@ -38,6 +40,7 @@ namespace Tgs.GameInterface.OBet.GrpcServices
             _playerBalanceService = playerBalanceService ?? throw new ArgumentNullException(nameof(playerBalanceService));
             _playerCreateService = playerCreateService ?? throw new ArgumentNullException(nameof(playerCreateService));
             _playerLogoutService = PlayerLogoutService ?? throw new ArgumentNullException(nameof(PlayerLogoutService));
+            _playerUpdateBetLimitService = playerUpdateBetLimitService ?? throw new ArgumentNullException(nameof(playerUpdateBetLimitService));
         }
 
         public override Task<CheckingServiceReply> CheckingService(CheckingServiceRequest request, ServerCallContext context)
@@ -232,6 +235,33 @@ namespace Tgs.GameInterface.OBet.GrpcServices
                 PlayerCode: request.PlayerCode);
 
             await _playerLogoutService
+                .ExecuteAsync(
+                    command: command,
+                   cancellationToken: context.CancellationToken)
+               .ConfigureAwait(false);
+
+            return new BaseReply
+            {
+                State = true
+            };
+        }
+
+        public override async Task<BaseReply> PlayerUpdateBetLimit(PlayerUpdateBetLimitRequest request, ServerCallContext context)
+        {
+            var command = new PlayerUpdateBetLimitCommand(
+                ApiUrl: new(request.ApiUrl),
+                ApiKey: request.ApiKey,
+                AgentId: request.AgentId,
+                PlayerCode: request.PlayerCode,
+                MaxBetGrpHdp: request.MaxBetGrpHdp,
+                MaxBetGrpBasketBall: request.MaxBetGrpBasketBall,
+                MaxBetGrpOthersSport: request.MaxBetGrpOthersSport,
+                MaxBetGrp1x2: request.MaxBetGrp1X2,
+                MaxBetGrpMixParlay: request.MaxBetGrpMixParlay,
+                MaxBetGrpOthersOdds: request.MaxBetGrpOthersOdds,
+                MaxBetGrpSpecial: request.MaxBetGrpSpecial);
+
+            await _playerUpdateBetLimitService
                 .ExecuteAsync(
                     command: command,
                    cancellationToken: context.CancellationToken)

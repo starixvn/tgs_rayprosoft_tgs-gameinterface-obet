@@ -209,4 +209,36 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
             },
             cancellationToken: cancellationToken)
         .ConfigureAwait(false);
+
+    public async ValueTask PlayerUpdateBetLimitAsync(
+        Uri apiUrl,
+        string apiKey,
+        string agentId,
+        string playerCode,
+        decimal maxBetGrpHdp,
+        decimal maxBetGrpBasketBall,
+        decimal maxBetGrpOthersSport,
+        decimal maxBetGrp1x2,
+        decimal maxBetGrpMixParlay,
+        decimal maxBetGrpOthersOdds,
+        decimal maxBetGrpSpecial,
+        CancellationToken cancellationToken = default)
+        => _ = await _client
+        .PlayerUpdateBetLimitAsync(
+            request: new PlayerUpdateBetLimitRequest
+            {
+                ApiUrl = apiUrl.ToString(),
+                ApiKey = apiKey,
+                AgentId = agentId,
+                PlayerCode = playerCode,
+                MaxBetGrpHdp = maxBetGrpHdp,
+                MaxBetGrpBasketBall = maxBetGrpBasketBall,
+                MaxBetGrpOthersSport = maxBetGrpOthersSport,
+                MaxBetGrp1X2 = maxBetGrp1x2,
+                MaxBetGrpMixParlay = maxBetGrpMixParlay,
+                MaxBetGrpOthersOdds = maxBetGrpOthersOdds,
+                MaxBetGrpSpecial = maxBetGrpSpecial
+            },
+            cancellationToken: cancellationToken)
+        .ConfigureAwait(false);
 }
