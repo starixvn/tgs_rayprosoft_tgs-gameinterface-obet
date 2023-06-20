@@ -337,5 +337,45 @@ namespace Tgs.GameInterface.OBet.Controllers
                         AgentId: source.AgentId,
                         PlayerCode: source.PlayerCode),
                     cancellationToken: HttpContext.RequestAborted);
+
+        /// <summary>
+        /// Players the create asynchronous.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// <b>Example</b><br />
+        ///
+        ///     Post
+        ///
+        ///         {
+        ///             "apiUrl": "https://sports-api.ob33club.com/",
+        ///             "apiKey": "G4sL7r0kKFI5Mm317w99",
+        ///             "agentId": "YYTES12",
+        ///             "playerCode": "4ucmqplxb029"
+        ///         }
+        /// </remarks>
+        [HttpPost("player/update/bet-limi", Name = "PlayerCreate")]
+        public ValueTask PlayerUpdateBetLimitAsync(
+            [FromServices] ICommandService<PlayerUpdateBetLimitCommand> service,
+            PlayerUpdateBetLimitViewModel source)
+        {
+            var command = new PlayerUpdateBetLimitCommand(
+                ApiUrl: source.ApiUrl,
+                ApiKey: source.ApiKey,
+                AgentId: source.AgentId,
+                PlayerCode: source.PlayerCode,
+                MaxBetGrpHdp: source.MaxBetGrpHdp,
+                MaxBetGrpBasketBall: source.MaxBetGrpBasketBall,
+                MaxBetGrpOthersSport: source.MaxBetGrpOthersSport,
+                MaxBetGrp1x2: source.MaxBetGrp1x2,
+                MaxBetGrpMixParlay: source.MaxBetGrpMixParlay,
+                MaxBetGrpOthersOdds: source.MaxBetGrpOthersOdds,
+                MaxBetGrpSpecial: source.MaxBetGrpSpecial);
+            return service.ExecuteAsync(
+                    command: command,
+                    cancellationToken: HttpContext.RequestAborted);
+        }
     }
 }

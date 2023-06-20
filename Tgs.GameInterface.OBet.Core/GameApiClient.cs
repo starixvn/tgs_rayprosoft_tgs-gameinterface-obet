@@ -244,22 +244,74 @@ internal class GameApiClient : IGameApiClient
         return true;
     }
 
+    /// <summary>
+    /// Updates the account asynchronous.
+    /// </summary>
+    /// <param name="apiUrl">The API URL.</param>
+    /// <param name="apiKey">The API key.</param>
+    /// <param name="agentId">The agent identifier.</param>
+    /// <param name="playerCode">The player code.</param>
+    /// <param name="maxBetGrpHdp">The maximum bet GRP HDP.(让球/大小盘/单双)</param>
+    /// <param name="maxBetGrpBasketBall">The maximum bet GRP basket ball.(篮球)</param>
+    /// <param name="maxBetGrpOthersSport">The maximum bet GRP others sport.(其他运动 (让球,大小盘,单双))</param>
+    /// <param name="maxBetGrp1x2">The maximum bet GRP1X2.(独赢/优胜冠军/双重机会)</param>
+    /// <param name="maxBetGrpMixParlay">The maximum bet GRP mix parlay.(混合过关)</param>
+    /// <param name="maxBetGrpOthersOdds">The maximum bet GRP others odds.(波胆/总进球/半场全场/最先得分/最后得分)</param>
+    /// <param name="maxBetGrpSpecial">The maximum bet GRP special.(特别投注)</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns></returns>
+    /// <exception cref="System.NotImplementedException"></exception>
     public async ValueTask UpdateAccountAsync(
         Uri apiUrl,
         string apiKey,
         string agentId,
         string playerCode,
+        decimal maxBetGrpHdp = 0,
+        decimal maxBetGrpBasketBall = 0,
+        decimal maxBetGrpOthersSport = 0,
+        decimal maxBetGrp1x2 = 0,
+        decimal maxBetGrpMixParlay = 0,
+        decimal maxBetGrpOthersOdds = 0,
+        decimal maxBetGrpSpecial = 0,
         CancellationToken cancellationToken = default)
     {
         var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
         var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
-        var parameters = new
-        {
-            hash,
-            agentId,
-            userId
-        };
 
+        var parameters = new JsonObject
+        {
+            { "hash", hash },
+            { "agentId", agentId },
+            { "userId", userId }
+        };
+        if (maxBetGrpHdp > 0)
+        {
+            parameters.Add("maxbetgrphdp", maxBetGrpHdp);
+        }
+        if (maxBetGrpBasketBall > 0)
+        {
+            parameters.Add("maxbetgrpbasketball", maxBetGrpBasketBall);
+        }
+        if (maxBetGrpOthersSport > 0)
+        {
+            parameters.Add("maxbetgrpotherssport", maxBetGrpOthersSport);
+        }
+        if (maxBetGrp1x2 > 0)
+        {
+            parameters.Add("maxbetgrp1x2", maxBetGrp1x2);
+        }
+        if (maxBetGrpMixParlay > 0)
+        {
+            parameters.Add("maxbetgrpmixparlay", maxBetGrpMixParlay);
+        }
+        if (maxBetGrpOthersOdds > 0)
+        {
+            parameters.Add("maxbetgrpothersodds", maxBetGrpOthersOdds);
+        }
+        if (maxBetGrpSpecial > 0)
+        {
+            parameters.Add("maxbetgrpspecial", maxBetGrpSpecial);
+        }
         var (StatusCode, JsonNode) = await PostAsync(
                 apiUrl: apiUrl,
                 path: "/api/sb/register",

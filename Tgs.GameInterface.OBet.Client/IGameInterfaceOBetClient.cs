@@ -71,4 +71,18 @@ public interface IGameInterfaceOBetClient
         string agentId,
         string playerCode,
         CancellationToken cancellationToken = default);
+
+    ValueTask PlayerUpdateBetLimitAsync(
+        Uri apiUrl,
+        string apiKey,
+        string agentId,
+        string playerCode,
+        decimal maxBetGrpHdp,
+        decimal maxBetGrpBasketBall,
+        decimal maxBetGrpOthersSport,
+        decimal maxBetGrp1x2,
+        decimal maxBetGrpMixParlay,
+        decimal maxBetGrpOthersOdds,
+        decimal maxBetGrpSpecial,
+        CancellationToken cancellationToken = default);
 }
