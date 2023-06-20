@@ -356,7 +356,7 @@ namespace Tgs.GameInterface.OBet.Controllers
         ///             "playerCode": "4ucmqplxb029"
         ///         }
         /// </remarks>
-        [HttpPost("player/update/bet-limi", Name = "PlayerCreate")]
+        [HttpPost("player/update/bet-limi", Name = "PlayerUpdateBetLimit")]
         public ValueTask PlayerUpdateBetLimitAsync(
             [FromServices] ICommandService<PlayerUpdateBetLimitCommand> service,
             PlayerUpdateBetLimitViewModel source)
