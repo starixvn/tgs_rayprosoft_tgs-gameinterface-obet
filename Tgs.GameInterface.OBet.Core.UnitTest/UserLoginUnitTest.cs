@@ -57,9 +57,8 @@ public class UserLoginUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/open")
-            .WithQueryString(query.ToString())
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/open")
+            .WithQueryString(query.ToString()!)
             .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -70,15 +69,13 @@ public class UserLoginUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .UserLoginAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  playerCode: playerCode,
-                  lang: lang,
-                  isMobile: isMobile)
-              .ConfigureAwait(false);
+        var actual = await client.UserLoginAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            lang: lang,
+            isMobile: isMobile);
 
         Assert.NotNull(actual);
         Assert.Equal("https://user3-m-sbk5.ob666777.net/obe/login?tk=5959ef019e454078998a692a49154077&l=zh-cn&ot=", actual.GameUrl);
@@ -127,9 +124,8 @@ public class UserLoginUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/open")
-            .WithQueryString(query.ToString())
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/open")
+            .WithQueryString(query.ToString()!)
             .Respond(HttpStatusCode.NotFound, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -140,15 +136,13 @@ public class UserLoginUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .UserLoginAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  playerCode: playerCode,
-                  lang: lang,
-                  isMobile: isMobile)
-              .ConfigureAwait(false);
+        var actual = await client.UserLoginAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            lang: lang,
+            isMobile: isMobile);
 
         Assert.NotNull(actual);
         Assert.False(actual.IsPlayerExist);

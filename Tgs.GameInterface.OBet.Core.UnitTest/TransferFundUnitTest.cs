@@ -58,7 +58,7 @@ public class TransferFundUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/fund")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -69,15 +69,13 @@ public class TransferFundUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .TransferFundAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                serialNo: serialNo,
-                amount: amount)
-            .ConfigureAwait(false);
+        await client.TransferFundAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            serialNo: serialNo,
+            amount: amount);
     }
 
     [Fact]
@@ -128,7 +126,7 @@ public class TransferFundUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/fund")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.BadRequest, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -139,17 +137,15 @@ public class TransferFundUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        _ = await Assert
-            .ThrowsAnyAsync<Exception>(() => client
-                .TransferFundAsync(
-                    apiUrl: apiUrl,
-                    apiKey: apiKey,
-                    agentId: agentId,
-                    playerCode: playerCode,
-                    serialNo: serialNo,
-                    amount: amount)
-                .AsTask())
-            .ConfigureAwait(false);
+        _ = await Assert.ThrowsAnyAsync<Exception>(
+            () => client.TransferFundAsync(
+                apiUrl: apiUrl,
+                apiKey: apiKey,
+                agentId: agentId,
+                playerCode: playerCode,
+                serialNo: serialNo,
+                amount: amount)
+            .AsTask());
     }
 
     [Fact]
@@ -200,7 +196,7 @@ public class TransferFundUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/fund")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.NotFound, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -211,17 +207,15 @@ public class TransferFundUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        _ = await Assert
-            .ThrowsAnyAsync<Exception>(() => client
-                .TransferFundAsync(
-                    apiUrl: apiUrl,
-                    apiKey: apiKey,
-                    agentId: agentId,
-                    playerCode: playerCode,
-                    serialNo: serialNo,
-                    amount: amount)
-                .AsTask())
-            .ConfigureAwait(false);
+        _ = await Assert.ThrowsAnyAsync<Exception>
+            (() => client.TransferFundAsync(
+                apiUrl: apiUrl,
+                apiKey: apiKey,
+                agentId: agentId,
+                playerCode: playerCode,
+                serialNo: serialNo,
+                amount: amount)
+            .AsTask());
     }
 
     [Fact]
@@ -272,7 +266,7 @@ public class TransferFundUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/fund")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -283,14 +277,12 @@ public class TransferFundUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .TransferFundAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                serialNo: serialNo,
-                amount: amount)
-            .ConfigureAwait(false);
+        await client.TransferFundAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            serialNo: serialNo,
+            amount: amount);
     }
 }

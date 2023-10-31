@@ -46,11 +46,9 @@ public class GameRecordQueryServiceUnitTest
             fakeLog,
             fakeGameApiClient);
 
-        var actual = await client
-            .QueryAsync(
-               query)
-            .ToArrayAsync()
-           .ConfigureAwait(false);
+        var actual = await client.QueryAsync(
+            query)
+            .ToArrayAsync();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
@@ -98,11 +96,9 @@ public class GameRecordQueryServiceUnitTest
             fakeLog,
             fakeGameApiClient);
 
-        var actual = await client
-            .QueryAsync(
-               query)
-            .ToArrayAsync()
-           .ConfigureAwait(false);
+        var actual = await client.QueryAsync(
+            query)
+            .ToArrayAsync();
 
         Assert.NotNull(actual);
         Assert.False(actual.Any());
@@ -147,11 +143,9 @@ public class GameRecordQueryServiceUnitTest
             fakeLog,
             fakeGameApiClient);
 
-        var actual = await client
-            .QueryAsync(
-               query)
-            .ToArrayAsync()
-           .ConfigureAwait(false);
+        var actual = await client.QueryAsync(
+            query)
+            .ToArrayAsync();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
@@ -199,11 +193,9 @@ public class GameRecordQueryServiceUnitTest
             fakeLog,
             fakeGameApiClient);
 
-        var actual = await client
-            .QueryAsync(
-               query)
-            .ToArrayAsync()
-           .ConfigureAwait(false);
+        var actual = await client.QueryAsync(
+            query)
+            .ToArrayAsync();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
@@ -251,11 +243,9 @@ public class GameRecordQueryServiceUnitTest
             fakeLog,
             fakeGameApiClient);
 
-        var actual = await client
-            .QueryAsync(
-               query)
-            .ToArrayAsync()
-           .ConfigureAwait(false);
+        var actual = await client.QueryAsync(
+            query)
+            .ToArrayAsync();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
@@ -306,11 +296,9 @@ public class GameRecordQueryServiceUnitTest
             fakeLog,
             fakeGameApiClient);
 
-        var actual = await client
-            .QueryAsync(
-               query)
-            .ToArrayAsync()
-           .ConfigureAwait(false);
+        var actual = await client.QueryAsync(
+            query)
+            .ToArrayAsync();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
@@ -362,11 +350,9 @@ public class GameRecordQueryServiceUnitTest
             fakeLog,
             fakeGameApiClient);
 
-        var actual = await client
-            .QueryAsync(
-               query)
-            .ToArrayAsync()
-           .ConfigureAwait(false);
+        var actual = await client.QueryAsync(
+            query)
+            .ToArrayAsync();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());

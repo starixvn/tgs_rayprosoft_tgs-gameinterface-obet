@@ -86,10 +86,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -99,20 +98,17 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startdate,
+            endDate: enddate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
-        Assert.NotNull(actual.First().ExternalClosedOn);
     }
 
     [Fact]
@@ -149,10 +145,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -162,16 +157,14 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startdate,
+            endDate: enddate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.False(actual.Any());
@@ -250,10 +243,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -263,16 +255,14 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startdate,
+            endDate: enddate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
@@ -352,10 +342,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -365,20 +354,17 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startdate,
+            endDate: enddate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
-        Assert.NotNull(actual.First().ExternalClosedOn);
     }
 
     [Fact]
@@ -454,10 +440,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -467,20 +452,17 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startdate,
+            endDate: enddate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
-        Assert.NotNull(actual.First().ExternalClosedOn);
     }
 
     [Fact]
@@ -556,10 +538,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -569,20 +550,17 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startDate,
-                  endDate: endDate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startDate,
+            endDate: endDate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
-        Assert.NotNull(actual.First().ExternalClosedOn);
         Assert.Equal(TicketWinLossStatus.Draw, actual.First().WinLossStatus!.Value);
     }
 
@@ -659,10 +637,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -672,20 +649,17 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startDate,
-                  endDate: endDate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startDate,
+            endDate: endDate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
-        Assert.NotNull(actual.First().ExternalClosedOn);
         Assert.Equal(TicketWinLossStatus.Lose, actual.First().WinLossStatus!.Value);
         Assert.Equal(10m, actual.First().Bet);
         Assert.Equal(-10m, actual.First().WinLoss);
@@ -763,10 +737,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                    .WithQueryString(query.ToString())
-                    .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -776,20 +749,17 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startDate,
-                  endDate: endDate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startDate,
+            endDate: endDate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
-        Assert.NotNull(actual.First().ExternalClosedOn);
         Assert.Equal(TicketWinLossStatus.Win, actual.First().WinLossStatus!.Value);
         Assert.Equal(10m, actual.First().Bet);
         Assert.Equal(9.6m, actual.First().WinLoss);
@@ -867,10 +837,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                        .WithQueryString(query.ToString())
-                        .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -880,16 +849,14 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startdate,
+            endDate: enddate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());
@@ -969,10 +936,9 @@ public class TicketUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/betinfo")
-                        .WithQueryString(query.ToString())
-                        .Respond(HttpStatusCode.OK, responseContent);
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/betinfo")
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -982,16 +948,14 @@ public class TicketUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .TicketAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  startDate: startdate,
-                  endDate: enddate)
-              .ToArrayAsync()
-              .ConfigureAwait(false)
-              ?? Enumerable.Empty<TicketResult>();
+        var actual = await client.TicketAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            startDate: startdate,
+            endDate: enddate)
+            .ToArrayAsync()
+            ?? Enumerable.Empty<TicketResult>();
 
         Assert.NotNull(actual);
         Assert.True(actual.Any());

@@ -56,7 +56,7 @@ public class TransferFundRecordEnquiryUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/fund/check")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -67,14 +67,12 @@ public class TransferFundRecordEnquiryUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-            .TransferFundRecordEnquiryAsync(
-                 apiUrl: apiUrl,
-                 apiKey: apiKey,
-                 agentId: agentId,
-                 playerCode: playerCode,
-                 serialNo: serialNo)
-             .ConfigureAwait(false);
+        var actual = await client.TransferFundRecordEnquiryAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            serialNo: serialNo);
 
         Assert.True(actual);
     }
@@ -125,7 +123,7 @@ public class TransferFundRecordEnquiryUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/fund/check")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.BadRequest, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -136,14 +134,12 @@ public class TransferFundRecordEnquiryUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-            .TransferFundRecordEnquiryAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  playerCode: playerCode,
-                  serialNo: serialNo)
-              .ConfigureAwait(false);
+        var actual = await client.TransferFundRecordEnquiryAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            serialNo: serialNo);
 
         Assert.False(actual);
     }

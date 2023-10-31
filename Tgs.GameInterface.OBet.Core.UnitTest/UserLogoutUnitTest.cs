@@ -50,9 +50,8 @@ public class UserLogoutUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/close")
-            .WithQueryString(query.ToString())
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/close")
+            .WithQueryString(query.ToString()!)
             .Respond(HttpStatusCode.Unauthorized, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -63,15 +62,13 @@ public class UserLogoutUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        _ = await Assert
-            .ThrowsAnyAsync<Exception>(() => client
-                .UserLogoutAsync(
-                    apiUrl: apiUrl,
-                    apiKey: apiKey,
-                    agentId: agentId,
-                    playerCode: playerCode)
-                .AsTask())
-            .ConfigureAwait(false);
+        _ = await Assert.ThrowsAnyAsync<Exception>(
+            () => client.UserLogoutAsync(
+                apiUrl: apiUrl,
+                apiKey: apiKey,
+                agentId: agentId,
+                playerCode: playerCode)
+            .AsTask());
     }
 
     [Fact]
@@ -113,9 +110,8 @@ public class UserLogoutUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/close")
-            .WithQueryString(query.ToString())
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/close")
+            .WithQueryString(query.ToString()!)
             .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -126,13 +122,11 @@ public class UserLogoutUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UserLogoutAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode)
-            .ConfigureAwait(false);
+        await client.UserLogoutAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode);
     }
 
     [Fact]
@@ -174,9 +168,8 @@ public class UserLogoutUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/close")
-            .WithQueryString(query.ToString())
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/close")
+            .WithQueryString(query.ToString()!)
             .Respond(HttpStatusCode.NotFound, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -187,12 +180,10 @@ public class UserLogoutUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UserLogoutAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode)
-            .ConfigureAwait(false);
+        await client.UserLogoutAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode);
     }
 }

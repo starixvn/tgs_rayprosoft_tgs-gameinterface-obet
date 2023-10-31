@@ -26,26 +26,22 @@ public class PlayerUpdateBetLimitCommandServiceUnitTest
         var client = new PlayerUpdateBetLimitCommandService(
             fakeGameApiClient);
 
-        await client
-           .ExecuteAsync(
-              command: command)
-          .ConfigureAwait(false);
+        await client.ExecuteAsync(command: command);
 
         await fakeGameApiClient
             .Received(1)
             .UpdateAccountAsync(
-                apiUrl: Arg.Is(command.ApiUrl),
-                apiKey: Arg.Is(command.ApiKey),
-                agentId: Arg.Is(command.AgentId),
-                playerCode: Arg.Is(command.PlayerCode),
-                maxBetGrpHdp: Arg.Is(command.MaxBetGrpHdp),
-                maxBetGrpBasketBall: Arg.Is(command.MaxBetGrpBasketBall),
-                maxBetGrpOthersSport: Arg.Is(command.MaxBetGrpOthersSport),
-                maxBetGrp1x2: Arg.Is(command.MaxBetGrp1x2),
-                maxBetGrpMixParlay: Arg.Is(command.MaxBetGrpMixParlay),
-                maxBetGrpOthersOdds: Arg.Is(command.MaxBetGrpOthersOdds),
-                maxBetGrpSpecial: Arg.Is(command.MaxBetGrpSpecial),
-                cancellationToken: Arg.Any<CancellationToken>())
-            .ConfigureAwait(false);
+            apiUrl: Arg.Is(command.ApiUrl),
+            apiKey: Arg.Is(command.ApiKey),
+            agentId: Arg.Is(command.AgentId),
+            playerCode: Arg.Is(command.PlayerCode),
+            maxBetGrpHdp: Arg.Is(command.MaxBetGrpHdp),
+            maxBetGrpBasketBall: Arg.Is(command.MaxBetGrpBasketBall),
+            maxBetGrpOthersSport: Arg.Is(command.MaxBetGrpOthersSport),
+            maxBetGrp1x2: Arg.Is(command.MaxBetGrp1x2),
+            maxBetGrpMixParlay: Arg.Is(command.MaxBetGrpMixParlay),
+            maxBetGrpOthersOdds: Arg.Is(command.MaxBetGrpOthersOdds),
+            maxBetGrpSpecial: Arg.Is(command.MaxBetGrpSpecial),
+            cancellationToken: Arg.Any<CancellationToken>());
     }
 }

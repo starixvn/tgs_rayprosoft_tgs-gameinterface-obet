@@ -54,7 +54,7 @@ public class CreateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.Unauthorized, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -65,15 +65,13 @@ public class CreateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        _ = await Assert
-            .ThrowsAsync<Exception>(() => client
-                .CreateAccountAsync(
-                     apiUrl: apiUrl,
-                     apiKey: apiKey,
-                     agentId: agentId,
-                     playerCode: playerCode)
-                .AsTask())
-            .ConfigureAwait(false);
+        _ = await Assert.ThrowsAsync<Exception>(
+            () => client.CreateAccountAsync(
+                apiUrl: apiUrl,
+                apiKey: apiKey,
+                agentId: agentId,
+                playerCode: playerCode)
+            .AsTask());
     }
 
     [Fact]
@@ -120,7 +118,7 @@ public class CreateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -131,12 +129,10 @@ public class CreateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .CreateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode)
-            .ConfigureAwait(false);
+        await client.CreateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode);
     }
 }

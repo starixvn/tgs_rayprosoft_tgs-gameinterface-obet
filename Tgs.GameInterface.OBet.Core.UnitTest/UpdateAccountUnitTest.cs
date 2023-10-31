@@ -68,7 +68,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.Unauthorized, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -79,22 +79,20 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        _ = await Assert
-            .ThrowsAsync<Exception>(() => client
-                .UpdateAccountAsync(
-                    apiUrl: apiUrl,
-                    apiKey: apiKey,
-                    agentId: agentId,
-                    playerCode: playerCode,
-                    maxBetGrpHdp: maxBetGrpHdp,
-                    maxBetGrpBasketBall: maxBetGrpBasketBall,
-                    maxBetGrpOthersSport: maxBetGrpOthersSport,
-                    maxBetGrp1x2: maxBetGrp1x2,
-                    maxBetGrpMixParlay: maxBetGrpMixParlay,
-                    maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                    maxBetGrpSpecial: maxBetGrpSpecial)
-                .AsTask())
-            .ConfigureAwait(false);
+        _ = await Assert.ThrowsAsync<Exception>(
+            () => client.UpdateAccountAsync(
+                apiUrl: apiUrl,
+                apiKey: apiKey,
+                agentId: agentId,
+                playerCode: playerCode,
+                maxBetGrpHdp: maxBetGrpHdp,
+                maxBetGrpBasketBall: maxBetGrpBasketBall,
+                maxBetGrpOthersSport: maxBetGrpOthersSport,
+                maxBetGrp1x2: maxBetGrp1x2,
+                maxBetGrpMixParlay: maxBetGrpMixParlay,
+                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+                maxBetGrpSpecial: maxBetGrpSpecial)
+            .AsTask());
     }
 
     [Fact]
@@ -155,7 +153,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -166,20 +164,18 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 
     [Fact]
@@ -240,7 +236,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -251,20 +247,18 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 
     [Fact]
@@ -325,7 +319,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -336,20 +330,18 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 
     [Fact]
@@ -410,7 +402,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -421,20 +413,18 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 
     [Fact]
@@ -495,7 +485,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -506,20 +496,18 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 
     [Fact]
@@ -580,7 +568,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -591,20 +579,18 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 
     [Fact]
@@ -665,7 +651,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -676,20 +662,18 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 
     [Fact]
@@ -751,7 +735,7 @@ public class UpdateAccountUnitTest
         var handler = new MockHttpMessageHandler();
         _ = handler
             .Expect(HttpMethod.Post, "/api/sb/register")
-            .WithContent(await requestcontent.ReadAsStringAsync().ConfigureAwait(false))
+            .WithContent(await requestcontent.ReadAsStringAsync())
             .Respond(statusCode: HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -762,19 +746,17 @@ public class UpdateAccountUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        await client
-            .UpdateAccountAsync(
-                apiUrl: apiUrl,
-                apiKey: apiKey,
-                agentId: agentId,
-                playerCode: playerCode,
-                maxBetGrpHdp: maxBetGrpHdp,
-                maxBetGrpBasketBall: maxBetGrpBasketBall,
-                maxBetGrpOthersSport: maxBetGrpOthersSport,
-                maxBetGrp1x2: maxBetGrp1x2,
-                maxBetGrpMixParlay: maxBetGrpMixParlay,
-                maxBetGrpOthersOdds: maxBetGrpOthersOdds,
-                maxBetGrpSpecial: maxBetGrpSpecial)
-            .ConfigureAwait(false);
+        await client.UpdateAccountAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode,
+            maxBetGrpHdp: maxBetGrpHdp,
+            maxBetGrpBasketBall: maxBetGrpBasketBall,
+            maxBetGrpOthersSport: maxBetGrpOthersSport,
+            maxBetGrp1x2: maxBetGrp1x2,
+            maxBetGrpMixParlay: maxBetGrpMixParlay,
+            maxBetGrpOthersOdds: maxBetGrpOthersOdds,
+            maxBetGrpSpecial: maxBetGrpSpecial);
     }
 }

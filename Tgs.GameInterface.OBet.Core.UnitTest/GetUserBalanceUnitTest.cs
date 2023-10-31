@@ -54,8 +54,8 @@ public class GetUserBalanceUnitTest
 
         var handler = new MockHttpMessageHandler();
         _ = handler.Expect(HttpMethod.Get, "/api/sb/bal")
-                .WithQueryString(query.ToString())
-                .Respond(HttpStatusCode.OK, responseContent);
+            .WithQueryString(query.ToString()!)
+            .Respond(HttpStatusCode.OK, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
 
@@ -65,13 +65,11 @@ public class GetUserBalanceUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .GetUserBalanceAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  playerCode: playerCode)
-              .ConfigureAwait(false);
+        var actual = await client.GetUserBalanceAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode);
 
         Assert.NotNull(actual);
         Assert.Equal(1m, actual.Balance);
@@ -116,9 +114,8 @@ public class GetUserBalanceUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/bal")
-            .WithQueryString(query.ToString())
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/bal")
+            .WithQueryString(query.ToString()!)
             .Throw(new OperationCanceledException());
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -130,14 +127,12 @@ public class GetUserBalanceUnitTest
             fakeHttpClient);
 
         _ = await Assert.ThrowsAsync<OperationCanceledException>(
-             () => client
-                .GetUserBalanceAsync(
-                    apiUrl: apiUrl,
-                    apiKey: apiKey,
-                    agentId: agentId,
-                    playerCode: playerCode)
-                .AsTask())
-             .ConfigureAwait(false);
+            () => client.GetUserBalanceAsync(
+                apiUrl: apiUrl,
+                apiKey: apiKey,
+                agentId: agentId,
+                playerCode: playerCode)
+            .AsTask());
     }
 
     [Fact]
@@ -179,9 +174,8 @@ public class GetUserBalanceUnitTest
         var responseContent = new StringContent(JsonSerializer.Serialize(response), Encoding.UTF8, MediaTypeNames.Application.Json);
 
         var handler = new MockHttpMessageHandler();
-        _ = handler
-            .Expect(HttpMethod.Get, "/api/sb/bal")
-            .WithQueryString(query.ToString())
+        _ = handler.Expect(HttpMethod.Get, "/api/sb/bal")
+            .WithQueryString(query.ToString()!)
             .Respond(HttpStatusCode.NotFound, responseContent);
 
         var fakeHttpClient = handler.ToHttpClient();
@@ -192,13 +186,11 @@ public class GetUserBalanceUnitTest
             fakeCryptographyUtensil,
             fakeHttpClient);
 
-        var actual = await client
-              .GetUserBalanceAsync(
-                  apiUrl: apiUrl,
-                  apiKey: apiKey,
-                  agentId: agentId,
-                  playerCode: playerCode)
-              .ConfigureAwait(false);
+        var actual = await client.GetUserBalanceAsync(
+            apiUrl: apiUrl,
+            apiKey: apiKey,
+            agentId: agentId,
+            playerCode: playerCode);
 
         Assert.NotNull(actual);
         Assert.False(actual.IsPlayerExist);

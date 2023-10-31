@@ -36,10 +36,7 @@ public class GameUrlGetServiceUnitTest
         var client = new GameUrlGetService(
             fakeGameApiClient);
 
-        var actual = await client
-            .GetAsync(
-               query)
-           .ConfigureAwait(false);
+        var actual = await client.GetAsync(query);
 
         Assert.NotNull(actual);
         Assert.True(actual.IsPlayerExist);

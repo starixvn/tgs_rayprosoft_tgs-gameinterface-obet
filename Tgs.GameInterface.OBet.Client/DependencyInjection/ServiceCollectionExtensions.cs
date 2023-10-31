@@ -13,7 +13,6 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         Action<GameInterfaceOBetClientOptions, IServiceProvider> configure)
     {
-
         var isDns = false;
         _ = services
             .AddOptions<GameInterfaceOBetClientOptions>()
