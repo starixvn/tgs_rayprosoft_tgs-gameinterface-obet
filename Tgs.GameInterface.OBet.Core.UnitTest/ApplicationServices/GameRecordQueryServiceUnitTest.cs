@@ -51,7 +51,7 @@ public class GameRecordQueryServiceUnitTest
             .ToArrayAsync();
 
         Assert.NotNull(actual);
-        Assert.True(actual.Any());
+        Assert.NotEmpty(actual);
         Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.True(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
@@ -101,7 +101,7 @@ public class GameRecordQueryServiceUnitTest
             .ToArrayAsync();
 
         Assert.NotNull(actual);
-        Assert.False(actual.Any());
+        Assert.Empty(actual);
     }
 
     [Fact]
@@ -148,7 +148,7 @@ public class GameRecordQueryServiceUnitTest
             .ToArrayAsync();
 
         Assert.NotNull(actual);
-        Assert.True(actual.Any());
+        Assert.NotEmpty(actual);
         Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.True(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
@@ -198,7 +198,7 @@ public class GameRecordQueryServiceUnitTest
             .ToArrayAsync();
 
         Assert.NotNull(actual);
-        Assert.True(actual.Any());
+        Assert.NotEmpty(actual);
         Assert.Equal("4ugz7klo94oa", actual.First().PlayerCode);
         Assert.True(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
@@ -248,7 +248,7 @@ public class GameRecordQueryServiceUnitTest
             .ToArrayAsync();
 
         Assert.NotNull(actual);
-        Assert.True(actual.Any());
+        Assert.NotEmpty(actual);
         Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.False(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
@@ -301,7 +301,7 @@ public class GameRecordQueryServiceUnitTest
             .ToArrayAsync();
 
         Assert.NotNull(actual);
-        Assert.True(actual.Any());
+        Assert.NotEmpty(actual);
         Assert.Equal("4ugz7klo94oa", actual.First().PlayerCode);
         Assert.False(actual.First().IsVoid);
         Assert.True(actual.First().IsClosed);
@@ -355,7 +355,7 @@ public class GameRecordQueryServiceUnitTest
             .ToArrayAsync();
 
         Assert.NotNull(actual);
-        Assert.True(actual.Any());
+        Assert.NotEmpty(actual);
         Assert.Equal("4ucmqplxb029", actual.First().PlayerCode);
         Assert.False(actual.First().IsVoid);
         Assert.False(actual.First().IsClosed);

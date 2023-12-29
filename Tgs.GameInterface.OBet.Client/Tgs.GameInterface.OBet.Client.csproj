@@ -1,30 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>0.0.7</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Version>0.0.8</Version>
 		<Authors>Raypro</Authors>
-		<RootNamespace>Tgs.GameInterface.OBet.Client</RootNamespace>
-		<PackageId>Tgs.GameInterface.OBet.Client</PackageId>
-		<Title>Tgs.GameInterface.OBet.Client</Title>
 		<PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-gameinterface-obet</PackageProjectUrl>
 		<RepositoryUrl>https://gitlab.com/rayprosoft/tgs-gameinterface-obet.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>Tgs GameInterface OBet.Client</PackageTags>
+		<RootNamespace>Tgs.GameInterface.OBet.Client</RootNamespace>
+		<PackageId>Tgs.GameInterface.OBet.Client</PackageId>
+		<Title>Tgs.GameInterface.OBet.Client</Title>
+		<Description>Tgs.GameInterface.OBet.Client</Description>
+		<PackageTags>Tgs GameInterface OBet Client</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.58.0" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.58.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.59.0">
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.59.0" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.59.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.60.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="PhoenixToolkits.Protobuf.ExtendTypes" Version="0.0.6" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<Protobuf Include="..\Tgs.GameInterface.OBet\Protos\gameinterfaceobet.proto">
 			<Link>gameinterfaceobet.proto</Link>

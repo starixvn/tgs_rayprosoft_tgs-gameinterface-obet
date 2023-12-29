@@ -4,15 +4,9 @@ using Tgs.GameInterface.OBet.Protos;
 
 namespace Tgs.GameInterface.OBet.Client;
 
-internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
+internal class GameInterfaceOBetClient(
+    GameInterfaceOBet.GameInterfaceOBetClient client) : IGameInterfaceOBetClient
 {
-    private readonly GameInterfaceOBet.GameInterfaceOBetClient _client;
-
-    public GameInterfaceOBetClient(GameInterfaceOBet.GameInterfaceOBetClient client)
-    {
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-    }
-
     public async ValueTask<string> CheckingServiceAsync(
         string machineName,
         CancellationToken cancellationToken = default)
@@ -22,7 +16,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
             MachineName = machineName,
         };
 
-        var reply = await _client
+        var reply = await client
             .CheckingServiceAsync(
                 request: request,
                 cancellationToken: cancellationToken)
@@ -39,7 +33,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         string serialNo,
         decimal amount,
         CancellationToken cancellationToken = default)
-        => await _client
+        => await client
         .FundInAsync(
             request: new FundRequest
             {
@@ -61,7 +55,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         string serialNo,
         decimal amount,
         CancellationToken cancellationToken = default)
-        => await _client
+        => await client
         .FundOutAsync(
             request: new FundRequest
             {
@@ -83,7 +77,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         string serialNo,
         CancellationToken cancellationToken = default)
     {
-        var reply = await _client
+        var reply = await client
         .FundStatusAsync(
             request: new FundStatusRequest
             {
@@ -107,7 +101,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         DateTimeOffset endDate,
        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var reply = await _client
+        var reply = await client
         .GameRecordAsync(
             request: new GameRecordRequest
             {
@@ -142,7 +136,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         string lang,
         bool isMobile,
         CancellationToken cancellationToken = default)
-        => await _client
+        => await client
         .GameUrlAsync(
             request: new GameUrlRequest
             {
@@ -162,7 +156,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         string agentId,
         string playerCode,
         CancellationToken cancellationToken = default)
-        => await _client
+        => await client
         .PlayerBalanceAsync(
             request: new PlayerBalanceRequest
             {
@@ -180,7 +174,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         string agentId,
         string playerCode,
         CancellationToken cancellationToken = default)
-        => _ = await _client
+        => _ = await client
         .PlayerCreateAsync(
             request: new PlayerCreateRequest
             {
@@ -198,7 +192,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         string agentId,
         string playerCode,
         CancellationToken cancellationToken = default)
-        => _ = await _client
+        => _ = await client
         .PlayerLogoutAsync(
             request: new PlayerLogoutRequest
             {
@@ -223,7 +217,7 @@ internal class GameInterfaceOBetClient : IGameInterfaceOBetClient
         decimal maxBetGrpOthersOdds,
         decimal maxBetGrpSpecial,
         CancellationToken cancellationToken = default)
-        => _ = await _client
+        => _ = await client
         .PlayerUpdateBetLimitAsync(
             request: new PlayerUpdateBetLimitRequest
             {

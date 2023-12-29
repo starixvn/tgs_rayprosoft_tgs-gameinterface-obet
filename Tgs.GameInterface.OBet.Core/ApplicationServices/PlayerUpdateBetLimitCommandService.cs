@@ -2,18 +2,11 @@
 
 namespace Tgs.GameInterface.OBet.Core.ApplicationServices;
 
-internal class PlayerUpdateBetLimitCommandService : ICommandService<PlayerUpdateBetLimitCommand>
+internal class PlayerUpdateBetLimitCommandService(
+    IGameApiClient client) : ICommandService<PlayerUpdateBetLimitCommand>
 {
-    private readonly IGameApiClient _client;
-
-    public PlayerUpdateBetLimitCommandService(IGameApiClient client)
-    {
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-    }
-
     public ValueTask ExecuteAsync(PlayerUpdateBetLimitCommand command, CancellationToken cancellationToken = default)
-        => _client
-        .UpdateAccountAsync(
+        => client.UpdateAccountAsync(
             apiUrl: command.ApiUrl,
             apiKey: command.ApiKey,
             agentId: command.AgentId,

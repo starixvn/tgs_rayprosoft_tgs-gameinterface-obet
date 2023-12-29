@@ -5,33 +5,23 @@ using Tgs.ServiceUtility;
 
 namespace Tgs.GameInterface.OBet.Core.ApplicationServices;
 
-internal class GameRecordQueryService : IQueryService<GameRecordQuery, GameRecordResult>
+internal class GameRecordQueryService(
+    ILogger<GameRecordQueryService> logger,
+    IGameApiClient client) : IQueryService<GameRecordQuery, GameRecordResult>
 {
-    private readonly IGameApiClient _client;
-    private readonly ILogger<GameRecordQueryService> _logger;
-
-    public GameRecordQueryService(
-        ILogger<GameRecordQueryService> logger,
-        IGameApiClient client)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-    }
-
     public async IAsyncEnumerable<GameRecordResult> QueryAsync(
         GameRecordQuery query,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var results = await _client
-            .TicketAsync(
-                apiUrl: query.ApiUrl,
-                apiKey: query.ApiKey,
-                agentId: query.AgentId,
-                startDate: query.StartDate,
-                endDate: query.EndDate,
-                cancellationToken: cancellationToken)
+        var results = await client.TicketAsync(
+            apiUrl: query.ApiUrl,
+            apiKey: query.ApiKey,
+            agentId: query.AgentId,
+            startDate: query.StartDate,
+            endDate: query.EndDate,
+            cancellationToken: cancellationToken)
             .ToArrayAsync(
-                cancellationToken)
+            cancellationToken)
             .ConfigureAwait(false)
             ?? Enumerable.Empty<TicketResult>();
 
@@ -44,7 +34,7 @@ internal class GameRecordQueryService : IQueryService<GameRecordQuery, GameRecor
         {
             if (result.Status == TicketSatus.Pending)
             {
-                _logger.LogWarning("The game record status is pending.({result})", result);
+                logger.LogWarning("The game record status is pending.({result})", result);
                 continue;
             }
 

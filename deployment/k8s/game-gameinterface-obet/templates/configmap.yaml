@@ -7,27 +7,28 @@ metadata:
 data:
   appsettings.json: |
     {
-        "Logging": {
-          "LogLevel": {
-            "Default": "Warning",
-            "Microsoft.AspNetCore": "Warning",
-            "Tgs.GameInterface.OBet.Core": "Information"
-          }
+      "Logging": {
+        "LogLevel": {
+          "Default": "Warning",
+          "Microsoft.AspNetCore": "Warning",
+          "Tgs.GameInterface.OBet.Core": "Information"
+        }
+      },
+      "Kestrel": {
+        "EndpointDefaults": {
+          "Protocols": "Http2"
         },
-        "Kestrel": {
-          "EndpointDefaults": {
-                "Protocols": "Http2"
+        "Endpoints": {
+          "Http": {
+            "Url": "http://*:{{ .Values.service.targetPort }}",
+            "Protocols": "Http1"
           },
-          "Endpoints": {
-            "HealthCheck": {
-                "Url": "http://*:{{ .Values.service.port }}",
-                "Protocols": "Http1"
-            },
-            "Grpc": {
-                "Url": "http://*:{{ .Values.servicegrpc.port }}"
-            }
+          "Grpc": {
+            "Url": "http://*:{{ .Values.service.grpc.targetPort }}",
+            "Protocols": "Http2"
           }
         }
+      }
     }
   otel-collector-config.yaml: |
     receivers:

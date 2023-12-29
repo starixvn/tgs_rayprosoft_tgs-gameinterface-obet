@@ -12,25 +12,12 @@ using Tgs.GameInterface.OBet.Core.Models;
 
 namespace Tgs.GameInterface.OBet.Core;
 
-internal class GameApiClient : IGameApiClient
+internal class GameApiClient(
+    ILogger<GameApiClient> logger,
+    IGameApiUtensil gameApiUtensil,
+    ICryptographyUtensil cryptographyUtensil,
+     HttpClient client) : IGameApiClient
 {
-    private readonly HttpClient _client;
-    private readonly ICryptographyUtensil _cryptographyUtensil;
-    private readonly IGameApiUtensil _gameApiUtensil;
-    private readonly ILogger<GameApiClient> _logger;
-
-    public GameApiClient(
-        ILogger<GameApiClient> logger,
-        IGameApiUtensil gameApiUtensil,
-        ICryptographyUtensil cryptographyUtensil,
-         HttpClient client)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _gameApiUtensil = gameApiUtensil ?? throw new ArgumentNullException(nameof(gameApiUtensil));
-        _cryptographyUtensil = cryptographyUtensil ?? throw new ArgumentNullException(nameof(cryptographyUtensil));
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-    }
-
     public async ValueTask CreateAccountAsync(
         Uri apiUrl,
         string apiKey,
@@ -38,8 +25,8 @@ internal class GameApiClient : IGameApiClient
         string playerCode,
         CancellationToken cancellationToken = default)
     {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var userId = gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
         var parameters = new
         {
             hash,
@@ -68,8 +55,8 @@ internal class GameApiClient : IGameApiClient
         string playerCode,
         CancellationToken cancellationToken = default)
     {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var userId = gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["agentId"] = agentId;
         query["userId"] = userId;
@@ -107,7 +94,7 @@ internal class GameApiClient : IGameApiClient
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
 
     {
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}");
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}");
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["agentId"] = agentId;
         query["hash"] = hash;
@@ -129,7 +116,7 @@ internal class GameApiClient : IGameApiClient
         var datas = JsonNode["Data"]?.AsArray()
             ?? throw new Exception($"The game provider responded with an error.({JsonNode.ToJsonString()})");
 
-        if (!datas.Any())
+        if (datas.Count == 0)
         {
             yield break;
         }
@@ -138,7 +125,7 @@ internal class GameApiClient : IGameApiClient
         {
             if (data is null)
             {
-                _logger.LogWarning("This data is empty.({data})", data);
+                logger.LogWarning("This data is empty.({data})", data);
                 continue;
             }
 
@@ -183,8 +170,8 @@ internal class GameApiClient : IGameApiClient
         decimal amount,
         CancellationToken cancellationToken = default)
     {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var userId = gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
         var parameters = new
         {
             hash,
@@ -217,8 +204,8 @@ internal class GameApiClient : IGameApiClient
         CancellationToken cancellationToken = default)
 
     {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var userId = gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
         var parameters = new
         {
             hash,
@@ -237,7 +224,7 @@ internal class GameApiClient : IGameApiClient
 
         if (StatusCode != HttpStatusCode.OK)
         {
-            _logger.LogError("The game provider responded with an error.({jsonNode})", JsonNode.ToJsonString());
+            logger.LogError("The game provider responded with an error.({jsonNode})", JsonNode.ToJsonString());
             return false;
         }
 
@@ -275,8 +262,8 @@ internal class GameApiClient : IGameApiClient
         decimal maxBetGrpSpecial = 0,
         CancellationToken cancellationToken = default)
     {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var userId = gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
 
         var parameters = new JsonObject
         {
@@ -335,8 +322,8 @@ internal class GameApiClient : IGameApiClient
         bool isMobile,
         CancellationToken cancellationToken = default)
     {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var userId = gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["agentId"] = agentId;
         query["userId"] = userId;
@@ -372,8 +359,8 @@ internal class GameApiClient : IGameApiClient
         CancellationToken cancellationToken = default)
 
     {
-        var userId = _gameApiUtensil.GetUserId(agentId, playerCode);
-        var hash = _cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
+        var userId = gameApiUtensil.GetUserId(agentId, playerCode);
+        var hash = cryptographyUtensil.Md5Encrypt($"k={apiKey}&a={agentId}&u={userId}");
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["agentId"] = agentId;
         query["userId"] = userId;
@@ -404,7 +391,7 @@ internal class GameApiClient : IGameApiClient
 
         var sw = Stopwatch.StartNew();
 
-        var httpResponseMessage = await _client.GetAsync(apiUrl, cancellationToken);
+        var httpResponseMessage = await client.GetAsync(apiUrl, cancellationToken);
 
         sw.Stop();
 
@@ -429,7 +416,7 @@ internal class GameApiClient : IGameApiClient
             ExecutionTimeMs = (int)sw.ElapsedMilliseconds,
             RecordedOn = DateTimeOffset.UtcNow
         };
-        _logger.LogInformation("{apiLogEvent}", JsonSerializer.Serialize(apiLogEvent));
+        logger.LogInformation("{apiLogEvent}", JsonSerializer.Serialize(apiLogEvent));
 
         return new(httpResponseMessage.StatusCode, JsonNode.Parse(responseMessage)!);
     }
@@ -448,7 +435,7 @@ internal class GameApiClient : IGameApiClient
 
         HttpContent content = new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, MediaTypeNames.Application.Json);
 
-        var httpResponseMessage = await _client.PostAsync(url, content, cancellationToken);
+        var httpResponseMessage = await client.PostAsync(url, content, cancellationToken);
 
         sw.Stop();
 
@@ -473,7 +460,7 @@ internal class GameApiClient : IGameApiClient
             ExecutionTimeMs = (int)sw.ElapsedMilliseconds,
             RecordedOn = DateTimeOffset.UtcNow
         };
-        _logger.LogInformation("{apiLogEvent}", JsonSerializer.Serialize(apiLogEvent));
+        logger.LogInformation("{apiLogEvent}", JsonSerializer.Serialize(apiLogEvent));
 
         return new(httpResponseMessage.StatusCode, JsonNode.Parse(responseMessage)!);
     }
