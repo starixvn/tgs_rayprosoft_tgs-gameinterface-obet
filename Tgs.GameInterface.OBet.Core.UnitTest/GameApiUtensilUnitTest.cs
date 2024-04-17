@@ -2,14 +2,14 @@
 
 public class GameApiUtensilUnitTest
 {
-    [Fact]
-    public void GetUserId()
-    {
-        var utensil = new GameApiUtensil();
+	[Fact]
+	public void GetUserId()
+	{
+		var utensil = new GameApiUtensil();
 
-        var actual = utensil.GetUserId("AG0", "test");
+		var actual = utensil.GetUserId("AG0", "test");
 
-        Assert.NotNull(actual);
-        Assert.Equal("AG0test", actual);
-    }
+		Assert.NotNull(actual);
+		Assert.Equal("AG0test", actual);
+	}
 }

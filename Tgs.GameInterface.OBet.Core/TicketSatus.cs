@@ -2,9 +2,9 @@
 
 public enum TicketSatus
 {
-    Pending = -1,
-    Accepted = 0,
-    Rejected = 1,
-    Cancelled = 4,
-    Refunded = 5
+	Pending = -1,
+	Accepted = 0,
+	Rejected = 1,
+	Cancelled = 4,
+	Refunded = 5
 }

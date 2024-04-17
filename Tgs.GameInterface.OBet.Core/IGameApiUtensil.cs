@@ -2,5 +2,5 @@
 
 public interface IGameApiUtensil
 {
-    public string GetUserId(string agentId, string playerCode);
+	public string GetUserId(string agentId, string playerCode);
 }

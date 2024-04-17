@@ -6,60 +6,60 @@ using Tgs.ServiceUtility;
 namespace Tgs.GameInterface.OBet.Core.ApplicationServices;
 
 internal class GameRecordQueryService(
-    ILogger<GameRecordQueryService> logger,
-    IGameApiClient client) : IQueryService<GameRecordQuery, GameRecordResult>
+	ILogger<GameRecordQueryService> logger,
+	IGameApiClient client) : IQueryService<GameRecordQuery, GameRecordResult>
 {
-    public async IAsyncEnumerable<GameRecordResult> QueryAsync(
-        GameRecordQuery query,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        var results = await client.TicketAsync(
-            apiUrl: query.ApiUrl,
-            apiKey: query.ApiKey,
-            agentId: query.AgentId,
-            startDate: query.StartDate,
-            endDate: query.EndDate,
-            cancellationToken: cancellationToken)
-            .ToArrayAsync(
-            cancellationToken)
-            .ConfigureAwait(false)
-            ?? Enumerable.Empty<TicketResult>();
+	public async IAsyncEnumerable<GameRecordResult> QueryAsync(
+		GameRecordQuery query,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
+	{
+		var results = await client.TicketAsync(
+			apiUrl: query.ApiUrl,
+			apiKey: query.ApiKey,
+			agentId: query.AgentId,
+			startDate: query.StartDate,
+			endDate: query.EndDate,
+			cancellationToken: cancellationToken)
+			.ToArrayAsync(
+			cancellationToken)
+			.ConfigureAwait(false)
+			?? Enumerable.Empty<TicketResult>();
 
-        if (!results.Any())
-        {
-            yield break;
-        }
+		if (!results.Any())
+		{
+			yield break;
+		}
 
-        foreach (var result in results)
-        {
-            if (result.Status == TicketSatus.Pending)
-            {
-                logger.LogWarning("The game record status is pending.({result})", result);
-                continue;
-            }
+		foreach (var result in results)
+		{
+			if (result.Status == TicketSatus.Pending)
+			{
+				logger.LogWarning("The game record status is pending.({result})", result);
+				continue;
+			}
 
-            var isClosed = result.Status switch
-            {
-                TicketSatus.Rejected => true,
-                TicketSatus.Cancelled => true,
-                TicketSatus.Refunded => true,
-                _ => result.WinLossStatus is not null
-            };
+			var isClosed = result.Status switch
+			{
+				TicketSatus.Rejected => true,
+				TicketSatus.Cancelled => true,
+				TicketSatus.Refunded => true,
+				_ => result.WinLossStatus is not null
+			};
 
-            var isVoid = result.Status != TicketSatus.Accepted;
+			var isVoid = result.Status != TicketSatus.Accepted;
 
-            yield return new GameRecordResult(
-                ExternalRoundId: result.ExternalRoundId,
-                PlayerCode: result.UserId.Replace(query.AgentId, string.Empty).ToLower(),
-                IsClosed: isClosed,
-                IsVoid: isVoid,
-                ExternalCreatedOn: result.ExternalCreatedOn,
-                ExternalClosedOn: result.ExternalClosedOn,
-                Bet: result.Bet,
-                Commission: result.Commission,
-                Settle: result.WinLoss + result.Bet,
-                WinLoss: result.WinLoss,
-                AdditionalData: result.AdditionalData);
-        }
-    }
+			yield return new GameRecordResult(
+				ExternalRoundId: result.ExternalRoundId,
+				PlayerCode: result.UserId.Replace(query.AgentId, string.Empty).ToLower(),
+				IsClosed: isClosed,
+				IsVoid: isVoid,
+				ExternalCreatedOn: result.ExternalCreatedOn,
+				ExternalClosedOn: result.ExternalClosedOn,
+				Bet: result.Bet,
+				Commission: result.Commission,
+				Settle: result.WinLoss + result.Bet,
+				WinLoss: result.WinLoss,
+				AdditionalData: result.AdditionalData);
+		}
+	}
 }

@@ -4,6 +4,6 @@ namespace Tgs.GameInterface.OBet.Client;
 
 public class DiagnosticsInterceptorOptions
 {
-    public ActivitySource InterceptorActivitySource { get; set; } =
-        new ActivitySource($"Tgs.GameInterface.OBet.Client.DiagnosticsInterceptor");
+	public ActivitySource InterceptorActivitySource { get; set; } =
+		new ActivitySource($"Tgs.GameInterface.OBet.Client.DiagnosticsInterceptor");
 }

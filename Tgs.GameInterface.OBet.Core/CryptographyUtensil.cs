@@ -5,17 +5,17 @@ namespace Tgs.GameInterface.OBet.Core;
 
 internal class CryptographyUtensil : ICryptographyUtensil
 {
-    public string Md5Encrypt(string source)
-    {
-        if (string.IsNullOrEmpty(source))
-        {
-            throw new ArgumentException("this source is empty.");
-        }
+	public string Md5Encrypt(string source)
+	{
+		if (string.IsNullOrEmpty(source))
+		{
+			throw new ArgumentException("this source is empty.");
+		}
 
-        var toEncryptArray = Encoding.UTF8.GetBytes(source);
+		var toEncryptArray = Encoding.UTF8.GetBytes(source);
 
-        var hash = MD5.HashData(toEncryptArray);
+		var hash = MD5.HashData(toEncryptArray);
 
-        return BitConverter.ToString(hash).Replace("-", String.Empty);
-    }
+		return BitConverter.ToString(hash).Replace("-", String.Empty);
+	}
 }

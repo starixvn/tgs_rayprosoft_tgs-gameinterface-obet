@@ -2,5 +2,5 @@
 
 public interface ICryptographyUtensil
 {
-    string Md5Encrypt(string source);
+	string Md5Encrypt(string source);
 }

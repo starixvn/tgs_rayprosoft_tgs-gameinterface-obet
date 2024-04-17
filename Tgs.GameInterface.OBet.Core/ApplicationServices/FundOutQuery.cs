@@ -1,9 +1,9 @@
 ﻿namespace Tgs.GameInterface.OBet.Core.ApplicationServices;
 
 public record FundOutQuery(
-    Uri ApiUrl,
-    string ApiKey,
-    string AgentId,
-    string PlayerCode,
-    string SerialNo,
-    decimal Amount);
+	Uri ApiUrl,
+	string ApiKey,
+	string AgentId,
+	string PlayerCode,
+	string SerialNo,
+	decimal Amount);
