@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
@@ -191,7 +192,18 @@ internal class GameApiClient(
 
 		if (StatusCode != HttpStatusCode.OK)
 		{
-			throw new Exception($"The game provider responded with an error.({JsonNode.ToJsonString()})");
+			var message = JsonNode["Message"]!.ToString();
+			var description = message switch
+			{
+				"-1" => "錯誤交易",
+				"2" => "交易失敗",
+				"99" => "無效交易",
+				"101" => "交易额无效",
+				"106" => $"交易限額無效(請檢查代理({agentId})額度)",
+				_ => $"此遊戲商提供未知錯誤訊息(message)"
+			};
+
+			throw new Exception(description);
 		}
 	}
 
@@ -468,6 +480,11 @@ internal class GameApiClient(
 			RecordedOn = DateTimeOffset.UtcNow
 		};
 		logger.LogInformation("{apiLogEvent}", JsonSerializer.Serialize(apiLogEvent));
+
+		if (string.IsNullOrWhiteSpace(responseMessage))
+		{
+			httpResponseMessage.EnsureSuccessStatusCode();
+		}
 
 		return new(httpResponseMessage.StatusCode, JsonNode.Parse(responseMessage)!);
 	}
