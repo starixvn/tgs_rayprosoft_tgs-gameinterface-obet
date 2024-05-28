@@ -3,6 +3,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using RichardSzalay.MockHttp;
 
@@ -20,6 +21,11 @@ public class TransferFundRecordEnquiryUnitTest
 		var serialNo = Guid.NewGuid().ToString("N");
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -63,6 +69,7 @@ public class TransferFundRecordEnquiryUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -87,6 +94,11 @@ public class TransferFundRecordEnquiryUnitTest
 		var serialNo = Guid.NewGuid().ToString("N");
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -130,6 +142,7 @@ public class TransferFundRecordEnquiryUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
