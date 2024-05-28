@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
@@ -8,6 +7,8 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Web;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Polly;
 using Tgs.GameInterface.OBet.Core.Extensions;
 using Tgs.GameInterface.OBet.Core.Models;
 
@@ -15,10 +16,13 @@ namespace Tgs.GameInterface.OBet.Core;
 
 internal class GameApiClient(
 	ILogger<GameApiClient> logger,
+	IOptions<PolicySettingsOptions> options,
 	IGameApiUtensil gameApiUtensil,
 	ICryptographyUtensil cryptographyUtensil,
-	 HttpClient client) : IGameApiClient
+	HttpClient client) : IGameApiClient
 {
+	private readonly PolicySettingsOptions _policySettingsOptions = options.Value;
+
 	public async ValueTask CreateAccountAsync(
 		Uri apiUrl,
 		string apiKey,
@@ -103,10 +107,29 @@ internal class GameApiClient(
 		query["enddate"] = endDate.DatetimeConvertToString();
 		var url = new Uri(apiUrl, $"/api/sb/betinfo?{query}");
 
-		var (StatusCode, JsonNode) = await GetAsync(
+		var retryCount = _policySettingsOptions.RetryCount;
+		var retrySeconds = _policySettingsOptions.RetrySeconds;
+		var retryPolicy = Policy
+			.HandleResult<(HttpStatusCode StatusCode, JsonNode JsonNode)>((result) => result.StatusCode == HttpStatusCode.BadRequest)
+			.WaitAndRetryAsync(
+				retryCount: retryCount,
+				retryAttempt => TimeSpan.FromSeconds(retrySeconds * retryAttempt),
+				onRetry: (result, retryTime, retryCount, context) =>
+				logger.LogWarning("{policyInfo}",
+				JsonSerializer.Serialize(
+					new JsonObject
+					{
+						["LogOn"] = DateTime.Now.ToString("o"),
+						["AgentId"] = agentId,
+						["startdate"] = startDate.ToString("O"),
+						["enddate"] = endDate.ToString("O"),
+						["url"] = url.ToString()
+					})));
+
+		var (StatusCode, JsonNode) = await retryPolicy.ExecuteAsync(() => GetAsync(
 				apiUrl: url,
 				logPrefix: "Ticket",
-				cancellationToken: cancellationToken)
+				cancellationToken: cancellationToken).AsTask())
 			.ConfigureAwait(false);
 
 		if (StatusCode != HttpStatusCode.OK)

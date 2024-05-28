@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using RichardSzalay.MockHttp;
 
@@ -27,6 +28,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -75,6 +81,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -111,6 +118,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -160,6 +172,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -194,6 +207,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -243,6 +261,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -277,6 +296,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -326,6 +350,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -360,6 +385,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -409,6 +439,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -443,6 +474,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -492,6 +528,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -526,6 +563,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -575,6 +617,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -609,6 +652,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 0m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -658,6 +706,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -692,6 +741,11 @@ public class UpdateAccountUnitTest
 		var maxBetGrpSpecial = 59m;
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -742,6 +796,7 @@ public class UpdateAccountUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);

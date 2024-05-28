@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Web;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using RichardSzalay.MockHttp;
 
@@ -20,6 +21,11 @@ public class UserLogoutUnitTest
 		var playerCode = "4ucmqplxb029";
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -58,6 +64,7 @@ public class UserLogoutUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -80,6 +87,11 @@ public class UserLogoutUnitTest
 		var playerCode = "4ucmqplxb029";
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -118,6 +130,7 @@ public class UserLogoutUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
@@ -138,6 +151,11 @@ public class UserLogoutUnitTest
 		var playerCode = "4ucmqplxb029";
 
 		var fakeLog = NullLogger<GameApiClient>.Instance;
+		var fakeOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeGameApiUtensil = Substitute.For<IGameApiUtensil>();
 		var fakeCryptographyUtensil = Substitute.For<ICryptographyUtensil>();
 
@@ -176,6 +194,7 @@ public class UserLogoutUnitTest
 
 		var client = new GameApiClient(
 			fakeLog,
+			fakeOptions,
 			fakeGameApiUtensil,
 			fakeCryptographyUtensil,
 			fakeHttpClient);
