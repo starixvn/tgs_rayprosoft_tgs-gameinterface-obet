@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<Authors>Raypro</Authors>
 		<PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-gameinterface-obet</PackageProjectUrl>
 		<RepositoryUrl>https://gitlab.com/rayprosoft/tgs-gameinterface-obet.git</RepositoryUrl>
@@ -34,6 +34,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Tgs.GameInterface.OBet.Protos\Tgs.GameInterface.OBet.Protos.csproj" />
+	  <ProjectReference Include="..\Tgs.GameInterface.OBet.Protos\Tgs.GameInterface.OBet.Protos.csproj">
+	    <PrivateAssets>all</PrivateAssets>
+	  </ProjectReference>
 	</ItemGroup>
 </Project>
