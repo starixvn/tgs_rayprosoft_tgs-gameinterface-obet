@@ -26,12 +26,14 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="PhoenixToolkits.NuGet.BuildTools" Version="0.0.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="PhoenixToolkits.Protobuf.ExtendTypes" Version="0.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="..\Tgs.GameInterface.OBet\Protos\gameinterfaceobet.proto">
-			<Link>gameinterfaceobet.proto</Link>
-		</Protobuf>
+	  <ProjectReference Include="..\Tgs.GameInterface.OBet.Protos\Tgs.GameInterface.OBet.Protos.csproj" />
 	</ItemGroup>
 </Project>
