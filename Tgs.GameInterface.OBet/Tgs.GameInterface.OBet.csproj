@@ -17,10 +17,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Protos\gameinterfaceobet.proto" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="FluentdForward.OpenTelemetry.MessagePack" Version="0.3.8" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
@@ -41,10 +37,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Tgs.GameInterface.OBet.Core\Tgs.GameInterface.OBet.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Protobuf Include="Protos\gameinterfaceobet.proto" />
+		<ProjectReference Include="..\Tgs.GameInterface.OBet.Protos\Tgs.GameInterface.OBet.Protos.csproj" />
 	</ItemGroup>
 
 </Project>
